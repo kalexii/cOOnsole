@@ -1,4 +1,6 @@
 ﻿using System;
+using ConsoleAppFramework.Description;
+using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
@@ -15,6 +17,12 @@ namespace ConsoleAppFramework.Reactions
             if (argument == null) throw new ArgumentNullException(nameof(argument));
             return func(argument);
         }
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            descriptionVisitor.WriteContent("Executes custom function.");
+        }
     }
 
     public class FuncDelegate : IReaction
@@ -26,5 +34,11 @@ namespace ConsoleAppFramework.Reactions
 
         public bool React(string[] argument)
             => func(argument ?? throw new ArgumentNullException(nameof(argument)));
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            descriptionVisitor.WriteContent("Executes custom function.");
+        }
     }
 }

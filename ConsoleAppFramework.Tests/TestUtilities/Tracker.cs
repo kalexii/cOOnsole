@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleAppFramework.Description;
+using Dawn;
 
 namespace ConsoleAppFramework.Tests.TestUtilities
 {
@@ -18,6 +19,12 @@ namespace ConsoleAppFramework.Tests.TestUtilities
             LastInput = argument;
             ++TimesCalled;
             return inner?.React(argument) ?? true;
+        }
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            descriptionVisitor.WriteContent("Tracks calls to this reaction.");
         }
     }
 }

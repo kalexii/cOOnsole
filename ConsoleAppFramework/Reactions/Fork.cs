@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using ConsoleAppFramework.Description;
+using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
@@ -15,6 +17,15 @@ namespace ConsoleAppFramework.Reactions
         {
             if (argument == null) throw new ArgumentNullException(nameof(argument));
             return reactions.Any(t => t.React(argument));
+        }
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            foreach (var reaction in reactions)
+            {
+                reaction.Describe(descriptionVisitor);
+            }
         }
     }
 }

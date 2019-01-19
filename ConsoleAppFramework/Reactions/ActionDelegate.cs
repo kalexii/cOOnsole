@@ -1,4 +1,6 @@
 ﻿using System;
+using ConsoleAppFramework.Description;
+using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
@@ -16,6 +18,12 @@ namespace ConsoleAppFramework.Reactions
             action(argument);
             return true;
         }
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            descriptionVisitor.WriteContent("Executes custom user action.");
+        }
     }
 
     public class ActionDelegate : IReaction
@@ -29,6 +37,12 @@ namespace ConsoleAppFramework.Reactions
         {
             action(argument ?? throw new ArgumentNullException(nameof(argument)));
             return true;
+        }
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            descriptionVisitor.WriteContent("Executes custom user action.");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ConsoleAppFramework.Reactions;
 using ConsoleAppFramework.Tests.TestUtilities;
@@ -11,6 +12,8 @@ namespace ConsoleAppFramework.Tests.Reactions
     public class TokenTests
     {
         [Test]
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
         public void DoesNotAllowNullsInToken()
             => new Action[]
             {

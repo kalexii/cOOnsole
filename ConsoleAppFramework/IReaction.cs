@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using ConsoleAppFramework.Description;
+using JetBrains.Annotations;
 
 namespace ConsoleAppFramework
 {
@@ -14,6 +15,8 @@ namespace ConsoleAppFramework
         /// <param name="argument">The input to react to.</param>
         /// <returns>Returns true if input has been handled, otherwise false.</returns>
         bool React([NotNull] TArgument argument);
+
+        void Describe([NotNull] IDescriptionVisitor descriptionVisitor);
     }
 
     /// <summary>

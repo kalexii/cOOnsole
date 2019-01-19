@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using ConsoleAppFramework.Description;
+using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
@@ -21,6 +23,13 @@ namespace ConsoleAppFramework.Reactions
             return argument.Length > 0
                    && string.Equals(argument[0], token, StringComparison.OrdinalIgnoreCase)
                    && inner.React(argument.Skip(1).ToArray());
+        }
+
+        public void Describe(IDescriptionVisitor descriptionVisitor)
+        {
+            Guard.Argument(descriptionVisitor).NotNull();
+            descriptionVisitor.WriteHeader(token);
+            inner.Describe(descriptionVisitor);
         }
     }
 }

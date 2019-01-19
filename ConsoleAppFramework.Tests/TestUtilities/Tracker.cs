@@ -11,9 +11,6 @@ namespace ConsoleAppFramework.Tests.TestUtilities
 
         public int TimesCalled { get; private set; }
 
-        public bool CalledAtLeastOnce
-            => TimesCalled > 0;
-
         public string[] LastInput { get; set; }
 
         public bool React(string[] argument)

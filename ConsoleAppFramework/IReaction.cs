@@ -1,4 +1,6 @@
-﻿namespace ConsoleAppFramework
+﻿using JetBrains.Annotations;
+
+namespace ConsoleAppFramework
 {
     /// <summary>
     /// Represents abstract reaction to the input. This interface is generic to support both raw and parsed input.
@@ -11,7 +13,7 @@
         /// </summary>
         /// <param name="argument">The input to react to.</param>
         /// <returns>Returns true if input has been handled, otherwise false.</returns>
-        bool React(TArgument argument);
+        bool React([NotNull] TArgument argument);
     }
 
     /// <summary>

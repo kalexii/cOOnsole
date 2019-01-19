@@ -15,7 +15,7 @@ namespace ConsoleAppFramework.Reactions
             this.inner = inner ?? throw new ArgumentNullException(nameof(inner));
         }
 
-        public bool React([NotNull] string[] argument)
+        public bool React(string[] argument)
         {
             if (argument == null) throw new ArgumentNullException(nameof(argument));
             return argument.Length > 0

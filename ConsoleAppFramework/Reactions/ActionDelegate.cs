@@ -10,7 +10,7 @@ namespace ConsoleAppFramework.Reactions
         public ActionDelegate([NotNull] Action<T> action)
             => this.action = action ?? throw new ArgumentNullException(nameof(action));
 
-        public bool React([NotNull] T argument)
+        public bool React(T argument)
         {
             if (argument == null) throw new ArgumentNullException(nameof(argument));
             action(argument);
@@ -27,8 +27,7 @@ namespace ConsoleAppFramework.Reactions
 
         public bool React(string[] argument)
         {
-            if (argument == null) throw new ArgumentNullException(nameof(argument));
-            action(argument);
+            action(argument ?? throw new ArgumentNullException(nameof(argument)));
             return true;
         }
     }

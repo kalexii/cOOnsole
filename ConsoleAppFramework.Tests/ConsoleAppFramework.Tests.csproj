@@ -11,4 +11,8 @@
     <PackageReference Include="xunit.runner.utility" Version="2.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleAppFramework\ConsoleAppFramework.csproj" />
+  </ItemGroup>
+
 </Project>

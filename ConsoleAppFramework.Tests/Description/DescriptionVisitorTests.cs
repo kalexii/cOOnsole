@@ -14,10 +14,9 @@ namespace ConsoleAppFramework.Tests.Description
         [Test]
         public void WorksWithFork()
         {
-            var fork =
-                new Fork(
-                    new Token("token a", new FuncDelegate(arg => true)),
-                    new Token("token b, longer", new FuncDelegate(arg => true)));
+            var fork = new Fork(
+                new Token("token a", new ActionDelegate(arg => { })),
+                new Token("token b, longer", new ActionDelegate(arg => { })));
 
             var descriptionVisitor = new DescriptionVisitor();
             fork.Describe(descriptionVisitor);
@@ -38,13 +37,10 @@ namespace ConsoleAppFramework.Tests.Description
 
             printer.Print(consoleMock.Object);
 
-            var expected =
-@"  token a         - Executes custom function.
+            const string expected = @"  token a         - Executes custom user action.
 
-  token b, longer - Executes custom function.";
-            textWriterMock.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Once());
-            var line = textWriterMock.Invocations.Single().Arguments[0] as string;
-            line.Should().BeEquivalentTo(expected);
+  token b, longer - Executes custom user action.";
+            textWriterMock.Verify(x => x.WriteLine(expected), Times.Once());
         }
     }
 }

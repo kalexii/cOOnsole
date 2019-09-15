@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using static ConsoleAppFramework.Tests.TestUtilities.ReactionMocks;
 using ConsoleAppFramework.Reactions;
-using ConsoleAppFramework.Tests.TestUtilities;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 
 namespace ConsoleAppFramework.Tests.Reactions
@@ -17,31 +18,31 @@ namespace ConsoleAppFramework.Tests.Reactions
         public void DoesNotAllowNullsInToken()
             => new Action[]
             {
-                () => new Token(null, new NoOp()),
+                () => new Token(null, AlwaysTrue().Object),
                 () => new Token("token", null)
             }.Select(x => x.Should().Throw<ArgumentNullException>()).ToArray();
 
         [Test]
         public void ReturnsTrueIfTokenMatches()
         {
-            var tracker = new Tracker();
-            var token = new Token("token", tracker);
+            var tracker = AlwaysTrue();
+            var token = new Token("token", tracker.Object);
 
             var actual = token.React(new[] {"token"});
 
             actual.Should().BeTrue();
-            tracker.TimesCalled.Should().Be(1);
+            tracker.Verify(x => x.React(It.IsAny<string[]>()), Times.Once());
         }
 
         [Test]
         public void PassesArgumentForwardWithoutMatchedToken()
         {
-            var tracker = new Tracker();
-            var token = new Token("token", tracker);
+            var tracker = AlwaysTrue();
+            var token = new Token("token", tracker.Object);
 
             token.React(new[] {"token"});
 
-            tracker.LastInput.Should().BeEquivalentTo(Array.Empty<string>());
+            tracker.Verify(x => x.React(Array.Empty<string>()), Times.Once());
         }
     }
 }

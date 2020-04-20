@@ -38,7 +38,7 @@ namespace ConsoleAppFramework.Tests.Description
             Execute(reaction);
         }
 
-        private void Execute(IReaction reaction, [CallerMemberName] string caller = null)
+        private void Execute(IHandler handler, [CallerMemberName] string caller = null)
         {
             var window = new Mock<IWritableWindow>();
             var writer = new Mock<TextWriter>();
@@ -46,8 +46,8 @@ namespace ConsoleAppFramework.Tests.Description
             var printed = new StringBuilder();
             writer.Setup(x => x.Write(It.IsAny<string>())).Callback<string>(s => printed.Append(s));
             writer.Setup(x => x.WriteLine()).Callback(() => printed.AppendLine());
-            var cli = new Cli(reaction, window.Object);
-            cli.React(new string[0]);
+            var cli = new Cli(handler, window.Object);
+            cli.HandleAsync(new string[0]);
 
             var expected = GetExpected(caller);
             printed.ToString().Should().Be(expected);

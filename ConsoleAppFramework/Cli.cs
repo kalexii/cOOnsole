@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ConsoleAppFramework.Description;
 using ConsoleAppFramework.Reactions;
 using Dawn;
@@ -8,20 +9,20 @@ namespace ConsoleAppFramework
     /// <summary>
     /// Contains shortcuts to common reactions.
     /// </summary>
-    public class Cli : IReaction
+    public class Cli : IHandler
     {
-        private readonly IReaction reaction;
+        private readonly IHandler handler;
         private readonly IWritableWindow window;
 
-        public Cli(IReaction reaction, IWritableWindow window = null)
+        public Cli(IHandler handler, IWritableWindow window = null)
         {
-            this.reaction = Guard.Argument(reaction, nameof(reaction)).NotNull().Value;
+            this.handler = Guard.Argument(handler, nameof(handler)).NotNull().Value;
             this.window = window ?? new ConsoleWindow();
         }
 
-        public bool React(string[] argument)
+        public async Task<bool> HandleAsync(string[] argument)
         {
-            if (!reaction.React(argument))
+            if (!await handler.HandleAsync(argument))
             {
                 PrintSelf();
             }
@@ -33,15 +34,15 @@ namespace ConsoleAppFramework
         {
             printer = new Printer(window);
             printer.Indent();
-            reaction.PrintSelf(printer);
+            handler.PrintSelf(printer);
             printer.Unindent();
         }
 
-        public static Token Token(string token, IReaction reaction) => new Token(token, reaction);
+        public static Token Token(string token, IHandler handler) => new Token(token, handler);
 
-        public static Fork Fork(params IReaction[] reactions) => new Fork(reactions);
+        public static Fork Fork(params IHandler[] reactions) => new Fork(reactions);
 
-        public static Fork Fork(string description, params IReaction[] reactions) => new Fork(description, reactions);
+        public static Fork Fork(string description, params IHandler[] reactions) => new Fork(description, reactions);
 
         public static ActionDelegate Action(Action<string[]> action) => new ActionDelegate(action);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using static ConsoleAppFramework.Tests.TestUtilities.ReactionMocks;
 using ConsoleAppFramework.Reactions;
 using FluentAssertions;
@@ -24,26 +25,26 @@ namespace ConsoleAppFramework.Tests.Reactions
                 .ToArray();
 
         [Test]
-        public void ReturnsTrueIfTokenMatches()
+        public async Task ReturnsTrueIfTokenMatches()
         {
             var tracker = AlwaysTrue();
             var token = new Token("token", tracker.Object);
 
-            var actual = token.React(new[] {"token"});
+            var actual = await token.HandleAsync(new[] {"token"});
 
             actual.Should().BeTrue();
-            tracker.Verify(x => x.React(It.IsAny<string[]>()), Times.Once());
+            tracker.Verify(x => x.HandleAsync(It.IsAny<string[]>()), Times.Once());
         }
 
         [Test]
-        public void PassesArgumentForwardWithoutMatchedToken()
+        public async Task PassesArgumentForwardWithoutMatchedToken()
         {
             var tracker = AlwaysTrue();
             var token = new Token("token", tracker.Object);
 
-            token.React(new[] {"token"});
+            await token.HandleAsync(new[] {"token"});
 
-            tracker.Verify(x => x.React(Array.Empty<string>()), Times.Once());
+            tracker.Verify(x => x.HandleAsync(Array.Empty<string>()), Times.Once());
         }
     }
 }

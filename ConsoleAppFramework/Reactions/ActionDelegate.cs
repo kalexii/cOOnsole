@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ConsoleAppFramework.Description;
 using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
 {
-    public class ActionDelegate<T> : IReaction<T> where T : class
+    public class ActionDelegate<T> : IHandler<T> where T : class
     {
         private readonly string description;
         private readonly Action<T> action;
@@ -20,11 +21,11 @@ namespace ConsoleAppFramework.Reactions
         {
         }
 
-        public bool React(T argument)
+        public Task<bool> HandleAsync(T argument)
         {
             Guard.Argument(argument, nameof(argument)).NotNull();
             action(argument);
-            return true;
+            return Task.FromResult(true);
         }
 
         public void PrintSelf(IPrinter printer)
@@ -34,7 +35,7 @@ namespace ConsoleAppFramework.Reactions
         }
     }
 
-    public class ActionDelegate : IReaction
+    public class ActionDelegate : IHandler
     {
         private readonly string description;
         private readonly Action<string[]> action;
@@ -49,11 +50,11 @@ namespace ConsoleAppFramework.Reactions
         {
         }
 
-        public bool React(string[] argument)
+        public Task<bool> HandleAsync(string[] argument)
         {
             Guard.Argument(argument, nameof(argument)).NotNull();
             action(argument);
-            return true;
+            return Task.FromResult(true);
         }
 
         public void PrintSelf(IPrinter printer)

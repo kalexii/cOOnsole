@@ -1,8 +1,9 @@
 ﻿using System;
 using ConsoleAppFramework.Reactions;
 using ConsoleAppFramework.Tests.TestUtilities;
-using FluentAssertions;
+using Moq;
 using NUnit.Framework;
+using static ConsoleAppFramework.Tests.TestUtilities.ReactionMocks;
 
 namespace ConsoleAppFramework.Tests.Reactions
 {
@@ -12,28 +13,32 @@ namespace ConsoleAppFramework.Tests.Reactions
         [Test]
         public void TriesScenariosInOrder()
         {
-            var falsePath = new Tracker(new RiggedHandler(false));
-            var truePath = new Tracker(new RiggedHandler(true));
-            var fork = new Fork(falsePath, truePath);
+            var falsePath = AlwaysFalse();
+            var truePath = AlwaysTrue();
+            var fork = new Fork(falsePath.Object, truePath.Object);
 
             fork.React(Array.Empty<string>());
 
-            falsePath.TimesCalled.Should().Be(1);
-            truePath.TimesCalled.Should().Be(1);
+            falsePath.Verify(x => x.React(It.IsAny<string[]>()), Times.Once());
+            truePath.Verify(x => x.React(It.IsAny<string[]>()), Times.Once());
         }
 
         [Test]
         public void ShortCircuits()
         {
-            var truePath = new Tracker(new RiggedHandler(true));
-            var falsePath = new Tracker(new RiggedHandler(false));
+            var truePath = new Mock<IReaction>().Do(mock => mock
+                .Setup(x => x.React(It.IsAny<string[]>()))
+                .Returns(true));
+            var falsePath = new Mock<IReaction>().Do(mock => mock
+                .Setup(x => x.React(It.IsAny<string[]>()))
+                .Returns(false));
 
-            var fork = new Fork(truePath, falsePath);
+            var fork = new Fork(truePath.Object, falsePath.Object);
 
             fork.React(Array.Empty<string>());
 
-            truePath.TimesCalled.Should().Be(1);
-            falsePath.TimesCalled.Should().Be(0);            
+            truePath.Verify(x => x.React(It.IsAny<string[]>()), Times.Once());
+            falsePath.Verify(x => x.React(It.IsAny<string[]>()), Times.Never());
         }
     }
 }

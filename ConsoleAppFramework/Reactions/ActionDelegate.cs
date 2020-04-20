@@ -1,34 +1,65 @@
 ﻿using System;
+using ConsoleAppFramework.Description;
+using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
 {
-    public class ActionDelegate<T> : IReaction<T>
+    public class ActionDelegate<T> : IReaction<T> where T : class
     {
+        private readonly string description;
         private readonly Action<T> action;
 
-        public ActionDelegate([NotNull] Action<T> action)
-            => this.action = action ?? throw new ArgumentNullException(nameof(action));
+        public ActionDelegate(string description, [NotNull] Action<T> action)
+        {
+            this.description = description ?? "Executes custom user action.";
+            this.action = Guard.Argument(action, nameof(action)).NotNull();
+        }
+
+        public ActionDelegate([NotNull] Action<T> action) : this("Executes custom user action.", action)
+        {
+        }
 
         public bool React(T argument)
         {
-            if (argument == null) throw new ArgumentNullException(nameof(argument));
+            Guard.Argument(argument, nameof(argument)).NotNull();
             action(argument);
             return true;
+        }
+
+        public void PrintSelf(IPrinter printer)
+        {
+            printer.Print(description);
+            printer.NewLine();
         }
     }
 
     public class ActionDelegate : IReaction
     {
+        private readonly string description;
         private readonly Action<string[]> action;
 
-        public ActionDelegate([NotNull] Action<string[]> action)
-            => this.action = action ?? throw new ArgumentNullException(nameof(action));
+        public ActionDelegate(string description, [NotNull] Action<string[]> action)
+        {
+            this.description = description ?? "Executes custom user action.";
+            this.action = Guard.Argument(action, nameof(action)).NotNull();
+        }
+
+        public ActionDelegate([NotNull] Action<string[]> action) : this("Executes custom user action.", action)
+        {
+        }
 
         public bool React(string[] argument)
         {
-            action(argument ?? throw new ArgumentNullException(nameof(argument)));
+            Guard.Argument(argument, nameof(argument)).NotNull();
+            action(argument);
             return true;
+        }
+
+        public void PrintSelf(IPrinter printer)
+        {
+            printer.Print(description);
+            printer.NewLine();
         }
     }
 }

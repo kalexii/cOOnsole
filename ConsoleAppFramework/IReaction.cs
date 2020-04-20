@@ -16,7 +16,7 @@ namespace ConsoleAppFramework
         /// <returns>Returns true if input has been handled, otherwise false.</returns>
         bool React([NotNull] TArgument argument);
 
-        void Describe([NotNull] IDescriptionVisitor descriptionVisitor);
+        void PrintSelf([NotNull] IPrinter printer);
     }
 
     /// <summary>

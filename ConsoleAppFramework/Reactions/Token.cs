@@ -13,23 +13,29 @@ namespace ConsoleAppFramework.Reactions
 
         public Token([NotNull] string token, [NotNull] IReaction inner)
         {
-            this.token = token ?? throw new ArgumentNullException(nameof(token));
-            this.inner = inner ?? throw new ArgumentNullException(nameof(inner));
+            this.token = Guard.Argument(token, nameof(token)).NotNull();
+            this.inner = Guard.Argument(inner, nameof(inner)).NotNull().Value;
         }
 
         public bool React(string[] argument)
         {
-            if (argument == null) throw new ArgumentNullException(nameof(argument));
+            Guard.Argument(argument, nameof(argument)).NotNull();
             return argument.Length > 0
                    && string.Equals(argument[0], token, StringComparison.OrdinalIgnoreCase)
                    && inner.React(argument.Skip(1).ToArray());
         }
 
-        public void Describe(IDescriptionVisitor descriptionVisitor)
+        public void PrintSelf(IPrinter printer)
         {
-            Guard.Argument(descriptionVisitor).NotNull();
-            descriptionVisitor.WriteHeader(token);
-            inner.Describe(descriptionVisitor);
+            printer.Indent();
+            printer.Print(token, ConsoleColor.Green);
+            printer.NewLine();
+            printer.Indent();
+            inner.PrintSelf(printer);
+            printer.Unindent();
+            printer.Unindent();
+            printer.NewLine();
+            
         }
     }
 }

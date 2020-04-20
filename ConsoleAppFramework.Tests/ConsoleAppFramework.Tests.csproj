@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConsoleAppFramework\ConsoleAppFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Description\Cases\Test2.txt" />
+    <None Remove="Description\Cases\Test1.txt" />
+    <EmbeddedResource Include="Description\Cases\Test1.txt" />
   </ItemGroup>
 
 </Project>

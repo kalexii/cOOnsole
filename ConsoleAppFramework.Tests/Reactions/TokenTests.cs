@@ -15,12 +15,13 @@ namespace ConsoleAppFramework.Tests.Reactions
         [Test]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
-        public void DoesNotAllowNullsInToken()
-            => new Action[]
-            {
-                () => new Token(null, AlwaysTrue().Object),
-                () => new Token("token", null)
-            }.Select(x => x.Should().Throw<ArgumentNullException>()).ToArray();
+        public void DoesNotAllowNullsInToken() => new Action[]
+                {
+                    () => new Token(null, AlwaysTrue().Object),
+                    () => new Token("token", null)
+                }
+                .Select(x => x.Should().Throw<ArgumentNullException>())
+                .ToArray();
 
         [Test]
         public void ReturnsTrueIfTokenMatches()

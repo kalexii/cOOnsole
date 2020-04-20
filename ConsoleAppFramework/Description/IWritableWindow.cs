@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace ConsoleAppFramework.Description
 {
     public interface IWritableWindow
     {
-        int Width { get; }
         TextWriter TextWriter { get; }
+        void SetColor(ConsoleColor color);
+        void ResetColor();
     }
 }

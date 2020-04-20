@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ConsoleAppFramework.Description;
 using Dawn;
 using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
 {
-    public class Token : IReaction
+    public class Token : IHandler
     {
         private readonly string token;
-        private readonly IReaction inner;
+        private readonly IHandler inner;
 
-        public Token([NotNull] string token, [NotNull] IReaction inner)
+        public Token([NotNull] string token, [NotNull] IHandler inner)
         {
             this.token = Guard.Argument(token, nameof(token)).NotNull();
             this.inner = Guard.Argument(inner, nameof(inner)).NotNull().Value;
         }
 
-        public bool React(string[] argument)
+        public Task<bool> HandleAsync(string[] argument)
         {
             Guard.Argument(argument, nameof(argument)).NotNull();
-            return argument.Length > 0
-                   && string.Equals(argument[0], token, StringComparison.OrdinalIgnoreCase)
-                   && inner.React(argument.Skip(1).ToArray());
+            if (argument.Length > 0 && string.Equals(argument[0], token, StringComparison.OrdinalIgnoreCase))
+            {
+                return inner.HandleAsync(argument.Skip(1).ToArray());
+            }
+
+            return Task.FromResult(false);
         }
 
         public void PrintSelf(IPrinter printer)
@@ -35,7 +39,6 @@ namespace ConsoleAppFramework.Reactions
             printer.Unindent();
             printer.Unindent();
             printer.NewLine();
-            
         }
     }
 }

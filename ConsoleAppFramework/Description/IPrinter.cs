@@ -6,7 +6,7 @@ namespace ConsoleAppFramework.Description
     {
         void Indent();
         void Unindent();
-        void Print(string value, ConsoleColor? color = null);
+        void Print(string value);
         void NewLine();
     }
 }

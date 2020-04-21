@@ -14,13 +14,8 @@ namespace ConsoleAppFramework.Description
 
         public void Unindent() => indent--;
 
-        public void Print(string value, ConsoleColor? color)
+        public void Print(string value)
         {
-            if (color != null)
-            {
-                window.SetColor(color.Value);
-            }
-
             if (isNewLine)
             {
                 window.TextWriter.Write(new string(' ', indent * 2));
@@ -28,11 +23,6 @@ namespace ConsoleAppFramework.Description
             }
 
             window.TextWriter.Write(value);
-
-            if (color != null)
-            {
-                window.ResetColor();
-            }
         }
 
         public void NewLine()

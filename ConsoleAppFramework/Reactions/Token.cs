@@ -32,7 +32,7 @@ namespace ConsoleAppFramework.Reactions
         public void PrintSelf(IPrinter printer)
         {
             printer.Indent();
-            printer.Print(token, ConsoleColor.Green);
+            printer.Print(token);
             printer.NewLine();
             printer.Indent();
             inner.PrintSelf(printer);

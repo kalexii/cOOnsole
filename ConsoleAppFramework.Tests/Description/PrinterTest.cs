@@ -16,7 +16,7 @@ namespace ConsoleAppFramework.Tests.Description
         [Test]
         public void Test1()
         {
-            var noop = Action(arg => { });
+            var noop = Action("noop", arg => { });
             var reaction = Fork("root fork",
                 Token("token a", noop),
                 Token("token b, longer", noop));
@@ -27,7 +27,7 @@ namespace ConsoleAppFramework.Tests.Description
         [Test]
         public void Test2()
         {
-            var noop = Action(arg => { });
+            var noop = Action("noop", arg => { });
             var reaction = Fork("outer fork",
                 Fork("inner fork",
                     Token("root-fork-token1", noop),

@@ -16,7 +16,7 @@ namespace ConsoleAppFramework.Tests.Reactions
         {
             var falsePath = AlwaysFalse();
             var truePath = AlwaysTrue();
-            var fork = new Fork(falsePath.Object, truePath.Object);
+            var fork = new Fork("test", falsePath.Object, truePath.Object);
 
             fork.HandleAsync(Array.Empty<string>());
 
@@ -34,7 +34,7 @@ namespace ConsoleAppFramework.Tests.Reactions
                 .Setup(x => x.HandleAsync(It.IsAny<string[]>()))
                 .Returns(Task.FromResult(false)));
 
-            var fork = new Fork(truePath.Object, falsePath.Object);
+            var fork = new Fork("test", truePath.Object, falsePath.Object);
 
             fork.HandleAsync(Array.Empty<string>());
 

@@ -33,4 +33,9 @@ namespace ConsoleAppFramework
             printer.Unindent();
         }
     }
+
+    public class GlobalArguments
+    {
+        public bool Help { get; set; }
+    }
 }

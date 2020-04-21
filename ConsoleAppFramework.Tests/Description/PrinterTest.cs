@@ -6,7 +6,7 @@ using ConsoleAppFramework.Tests.TestUtilities;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using static ConsoleAppFramework.Cli;
+using static ConsoleAppFramework.Shortcuts;
 
 namespace ConsoleAppFramework.Tests.Description
 {

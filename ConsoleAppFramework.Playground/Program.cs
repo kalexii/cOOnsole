@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
 using Pastel;
-using static ConsoleAppFramework.Cli;
+using static ConsoleAppFramework.Shortcuts;
 
 namespace ConsoleAppFramework.Playground
 {

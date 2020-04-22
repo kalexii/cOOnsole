@@ -11,13 +11,9 @@ namespace ConsoleAppFramework.Reactions
         private readonly string description;
         private readonly IHandler[] reactions;
 
-        public Fork([NotNull] params IHandler[] reactions) : this("Fork", reactions)
+        public Fork([NotNull] string description, [NotNull] params IHandler[] reactions)
         {
-        }
-
-        public Fork(string description, [NotNull] params IHandler[] reactions)
-        {
-            this.description = description ?? "Fork";
+            this.description = Guard.Argument(description, nameof(description)).NotNull();
             this.reactions = Guard.Argument(reactions, nameof(reactions)).NotNull();
         }
 

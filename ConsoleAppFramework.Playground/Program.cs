@@ -1,16 +1,14 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
-using Pastel;
-using static ConsoleAppFramework.Cli;
+﻿using System.Threading.Tasks;
+using static ConsoleAppFramework.Shortcuts;
 
 namespace ConsoleAppFramework.Playground
 {
     internal static class Program
     {
         public static Task Main(string[] args) => new Cli(
-            Fork("top level fork".Pastel(Color.DarkGreen),
-                Token("action 1".Pastel(Color.Green), Action("my action description 1", _ => { })),
-                Token("action 2".Pastel(Color.Green), Action("my action description 2", _ => { }))
+            Fork("top level fork",
+                Token("action 1", Action("my action description 1", _ => { })),
+                Token("action 2", Action("my action description 2", _ => { }))
             )).HandleAsync(args);
     }
 }

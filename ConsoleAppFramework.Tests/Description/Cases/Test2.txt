@@ -3,14 +3,14 @@
     inner fork
 
         root-fork-token1
-          Executes custom user action.
+          noop
 
         root-fork-token2
-          Executes custom user action.
+          noop
 
       root-token1
-        Executes custom user action.
+        noop
 
       root-token2
-        Executes custom user action.
+        noop
 

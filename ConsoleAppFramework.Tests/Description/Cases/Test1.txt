@@ -1,8 +1,8 @@
   root fork
 
       token a
-        Executes custom user action.
+        noop
 
       token b, longer
-        Executes custom user action.
+        noop
 

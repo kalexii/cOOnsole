@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Reflection;
+using System.Threading.Tasks;
 using ConsoleAppFramework.Description;
 using Dawn;
 
@@ -6,18 +7,18 @@ namespace ConsoleAppFramework
 {
     public class Cli : IHandler
     {
-        private readonly IHandler handler;
-        private readonly IWritableWindow window;
+        private readonly IHandler _handler;
+        private readonly IWritableWindow _window;
 
-        public Cli(IHandler handler, IWritableWindow window = null)
+        public Cli(IHandler handler, IWritableWindow? window = null)
         {
-            this.handler = Guard.Argument(handler, nameof(handler)).NotNull().Value;
-            this.window = window ?? new ConsoleWindow();
+            _handler = Guard.Argument(handler, nameof(handler)).NotNull().Value;
+            _window = window ?? new ConsoleWindow();
         }
 
         public async Task<bool> HandleAsync(string[] argument)
         {
-            if (!await handler.HandleAsync(argument))
+            if (!await _handler.HandleAsync(argument))
             {
                 PrintSelf();
             }
@@ -25,17 +26,25 @@ namespace ConsoleAppFramework
             return true;
         }
 
-        public void PrintSelf(IPrinter printer = null)
+        public void PrintSelf(IPrinter? printer = null)
         {
-            printer = new Printer(window);
+            printer ??= new Printer(_window);
+
+            var assembly = Assembly.GetEntryAssembly();
+            var version = assembly
+              ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+              ?.InformationalVersion;
+
+            printer
+               .Print($"{assembly!.GetName().Name} v{version}")
+               .NewLine()
+               .Print("Usage:")
+               .NewLine()
+               .NewLine();
+
             printer.Indent();
-            handler.PrintSelf(printer);
+            _handler.PrintSelf(printer);
             printer.Unindent();
         }
-    }
-
-    public class GlobalArguments
-    {
-        public bool Help { get; set; }
     }
 }

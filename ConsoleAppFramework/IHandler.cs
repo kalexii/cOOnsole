@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace ConsoleAppFramework
 {
     /// <summary>
-    /// Represents abstract reaction to the input. This interface is generic to support both raw and parsed input.
+    /// Represents abstract reaction to the input.
     /// </summary>
     public interface IHandler
     {
@@ -16,6 +16,10 @@ namespace ConsoleAppFramework
         /// <returns>Returns true if input has been handled, otherwise false.</returns>
         Task<bool> HandleAsync([NotNull] string[] args);
 
+        /// <summary>
+        /// Method that gets called whenever help message is generated.
+        /// </summary>
+        /// <param name="printer">The printer.</param>
         void PrintSelf([NotNull] IPrinter printer);
     }
 }

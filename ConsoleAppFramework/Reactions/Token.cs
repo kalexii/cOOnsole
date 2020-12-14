@@ -9,21 +9,21 @@ namespace ConsoleAppFramework.Reactions
 {
     public class Token : IHandler
     {
-        private readonly string token;
-        private readonly IHandler inner;
+        private readonly string _token;
+        private readonly IHandler _inner;
 
         public Token([NotNull] string token, [NotNull] IHandler inner)
         {
-            this.token = Guard.Argument(token, nameof(token)).NotNull();
-            this.inner = Guard.Argument(inner, nameof(inner)).NotNull().Value;
+            _token = Guard.Argument(token, nameof(token)).NotNull();
+            _inner = Guard.Argument(inner, nameof(inner)).NotNull().Value;
         }
 
         public Task<bool> HandleAsync(string[] argument)
         {
             Guard.Argument(argument, nameof(argument)).NotNull();
-            if (argument.Length > 0 && string.Equals(argument[0], token, StringComparison.OrdinalIgnoreCase))
+            if (argument.Length > 0 && string.Equals(argument[0], _token, StringComparison.OrdinalIgnoreCase))
             {
-                return inner.HandleAsync(argument.Skip(1).ToArray());
+                return _inner.HandleAsync(argument.Skip(1).ToArray());
             }
 
             return Task.FromResult(false);
@@ -31,14 +31,9 @@ namespace ConsoleAppFramework.Reactions
 
         public void PrintSelf(IPrinter printer)
         {
-            printer.Indent();
-            printer.Print(token);
-            printer.NewLine();
-            printer.Indent();
-            inner.PrintSelf(printer);
-            printer.Unindent();
-            printer.Unindent();
-            printer.NewLine();
+            printer.Indent().Print(_token).NewLine().Indent();
+            _inner.PrintSelf(printer);
+            printer.Unindent().Unindent().NewLine();
         }
     }
 }

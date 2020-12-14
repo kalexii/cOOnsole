@@ -2,11 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using static ConsoleAppFramework.Tests.TestUtilities.ReactionMocks;
 using ConsoleAppFramework.Reactions;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using static ConsoleAppFramework.Tests.TestUtilities.ReactionMocks;
 
 namespace ConsoleAppFramework.Tests.Reactions
 {
@@ -18,8 +18,8 @@ namespace ConsoleAppFramework.Tests.Reactions
         [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
         public void DoesNotAllowNullsInToken() => new Action[]
                 {
-                    () => new Token(null, AlwaysTrue().Object),
-                    () => new Token("token", null)
+                    () => new Token(null!, AlwaysTrue().Object),
+                    () => new Token("token", null!)
                 }
                 .Select(x => x.Should().Throw<ArgumentNullException>())
                 .ToArray();

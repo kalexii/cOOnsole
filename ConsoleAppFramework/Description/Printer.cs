@@ -1,34 +1,42 @@
-﻿using System;
-
-namespace ConsoleAppFramework.Description
+﻿namespace ConsoleAppFramework.Description
 {
     public class Printer : IPrinter
     {
-        private readonly IWritableWindow window;
-        private int indent;
-        private bool isNewLine = true;
+        private readonly IWritableWindow _window;
+        private int _indent;
+        private bool _isNewLine = true;
 
-        public Printer(IWritableWindow window) => this.window = window;
+        public Printer(IWritableWindow window) => _window = window;
 
-        public void Indent() => indent++;
-
-        public void Unindent() => indent--;
-
-        public void Print(string value)
+        public IPrinter Indent()
         {
-            if (isNewLine)
-            {
-                window.TextWriter.Write(new string(' ', indent * 2));
-                isNewLine = false;
-            }
-
-            window.TextWriter.Write(value);
+            _indent++;
+            return this;
         }
 
-        public void NewLine()
+        public IPrinter Unindent()
         {
-            window.TextWriter.WriteLine();
-            isNewLine = true;
+            _indent--;
+            return this;
+        }
+
+        public IPrinter Print(string value)
+        {
+            if (_isNewLine)
+            {
+                _window.TextWriter.Write(new string(' ', _indent * 2));
+                _isNewLine = false;
+            }
+
+            _window.TextWriter.Write(value);
+            return this;
+        }
+
+        public IPrinter NewLine()
+        {
+            _window.TextWriter.WriteLine();
+            _isNewLine = true;
+            return this;
         }
     }
 }

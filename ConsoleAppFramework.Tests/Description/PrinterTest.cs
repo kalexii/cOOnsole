@@ -16,7 +16,7 @@ namespace ConsoleAppFramework.Tests.Description
         [Test]
         public void Test1()
         {
-            var noop = Action("noop", arg => { });
+            var noop = Action("noop", _ => { });
             var reaction = Fork("root fork",
                 Token("token a", noop),
                 Token("token b, longer", noop));
@@ -27,7 +27,7 @@ namespace ConsoleAppFramework.Tests.Description
         [Test]
         public void Test2()
         {
-            var noop = Action("noop", arg => { });
+            var noop = Action("noop", _ => { });
             var reaction = Fork("outer fork",
                 Fork("inner fork",
                     Token("root-fork-token1", noop),
@@ -38,7 +38,7 @@ namespace ConsoleAppFramework.Tests.Description
             Execute(reaction);
         }
 
-        private void Execute(IHandler handler, [CallerMemberName] string caller = null)
+        private void Execute(IHandler handler, [CallerMemberName] string? caller = null)
         {
             var window = new Mock<IWritableWindow>();
             var writer = new Mock<TextWriter>();
@@ -49,7 +49,7 @@ namespace ConsoleAppFramework.Tests.Description
             var cli = new Cli(handler, window.Object);
             cli.HandleAsync(new string[0]);
 
-            var expected = GetExpected(caller);
+            var expected = GetExpected(caller!);
             printed.ToString().Should().Be(expected);
         }
     }

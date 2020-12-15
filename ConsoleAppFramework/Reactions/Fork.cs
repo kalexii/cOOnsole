@@ -5,35 +5,45 @@ using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
 {
-    public class Fork : IHandler
+    public class Fork : Handler
     {
         private readonly string _description;
-        private readonly IHandler[] _reactions;
+        private readonly IHandler[] _handlers;
 
-        public Fork([NotNull] string description, [NotNull] params IHandler[] reactions)
+        public Fork([NotNull] string description, [NotNull] params IHandler[] handlers)
         {
             _description = Guard.Argument(description, nameof(description)).NotNull();
-            _reactions = Guard.Argument(reactions, nameof(reactions)).NotNull();
+            _handlers = Guard.Argument(handlers, nameof(handlers)).NotNull();
         }
 
-        public async Task<bool> HandleAsync(string[] argument)
+        public override void SetContext(HandlerContext context)
         {
-            Guard.Argument(argument, nameof(argument)).NotNull();
-            foreach (var reaction in _reactions)
+            base.SetContext(context);
+            foreach (var handler in _handlers)
             {
-                if (await reaction.HandleAsync(argument))
+                handler.SetContext(context);
+            }
+        }
+
+        public override async Task<IHandler?> HandleAsync(string[] arguments)
+        {
+            Guard.Argument(arguments, nameof(arguments)).NotNull();
+            foreach (var reaction in _handlers)
+            {
+                var result = await reaction.HandleAsync(arguments);
+                if (result == null)
                 {
-                    return true;
+                    return result;
                 }
             }
 
-            return false;
+            return this;
         }
 
-        public void PrintSelf(IPrinter printer)
+        public override void PrintSelf(IPrinter printer)
         {
             printer.Print(_description).NewLine().NewLine().Indent();
-            foreach (var reaction in _reactions)
+            foreach (var reaction in _handlers)
             {
                 reaction.PrintSelf(printer);
             }

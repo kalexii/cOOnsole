@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
 {
-    public class ActionDelegate : IHandler
+    public class ActionDelegate : Handler
     {
         private readonly string _description;
         private readonly Action<string[]> _action;
@@ -17,13 +17,13 @@ namespace ConsoleAppFramework.Reactions
             _action = Guard.Argument(action, nameof(action)).NotNull();
         }
 
-        public Task<bool> HandleAsync(string[] argument)
+        public override Task<IHandler?> HandleAsync(string[] arguments)
         {
-            Guard.Argument(argument, nameof(argument)).NotNull();
-            _action(argument);
-            return Task.FromResult(true);
+            Guard.Argument(arguments, nameof(arguments)).NotNull();
+            _action(arguments);
+            return Task.FromResult<IHandler?>(null);
         }
 
-        public void PrintSelf(IPrinter printer) => printer.Print(_description).NewLine();
+        public override void PrintSelf(IPrinter printer) => printer.Print(_description).NewLine();
     }
 }

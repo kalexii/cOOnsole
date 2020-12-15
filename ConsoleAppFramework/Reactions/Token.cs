@@ -7,10 +7,10 @@ using JetBrains.Annotations;
 
 namespace ConsoleAppFramework.Reactions
 {
-    public class Token : IHandler
+    public class Token : Handler
     {
-        private readonly string _token;
         private readonly IHandler _inner;
+        private readonly string _token;
 
         public Token([NotNull] string token, [NotNull] IHandler inner)
         {
@@ -18,7 +18,7 @@ namespace ConsoleAppFramework.Reactions
             _inner = Guard.Argument(inner, nameof(inner)).NotNull().Value;
         }
 
-        public Task<bool> HandleAsync(string[] argument)
+        public override Task<IHandler?> HandleAsync(string[] argument)
         {
             Guard.Argument(argument, nameof(argument)).NotNull();
             if (argument.Length > 0 && string.Equals(argument[0], _token, StringComparison.OrdinalIgnoreCase))
@@ -26,10 +26,16 @@ namespace ConsoleAppFramework.Reactions
                 return _inner.HandleAsync(argument.Skip(1).ToArray());
             }
 
-            return Task.FromResult(false);
+            return Task.FromResult<IHandler?>(this);
         }
 
-        public void PrintSelf(IPrinter printer)
+        public override void SetContext(HandlerContext context)
+        {
+            base.SetContext(context);
+            _inner.SetContext(context);
+        }
+
+        public override void PrintSelf(IPrinter printer)
         {
             printer.Indent().Print(_token).NewLine().Indent();
             _inner.PrintSelf(printer);

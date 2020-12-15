@@ -5,41 +5,40 @@ using System.Threading.Tasks;
 using ConsoleAppFramework.Reactions;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using static ConsoleAppFramework.Tests.TestUtilities.ReactionMocks;
 
 namespace ConsoleAppFramework.Tests.Reactions
 {
-    [TestFixture]
     public class TokenTests
     {
-        [Test]
+        [Fact]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
         public void DoesNotAllowNullsInToken() => new Action[]
-                {
-                    () => new Token(null!, AlwaysTrue().Object),
-                    () => new Token("token", null!)
-                }
-                .Select(x => x.Should().Throw<ArgumentNullException>())
-                .ToArray();
+            {
+                () => new Token(null!, AlwaysSuccess().Object),
+                () => new Token("token", null!)
+            }
+           .Select(x => x.Should().Throw<ArgumentNullException>())
+           .ToArray();
 
-        [Test]
+        [Fact]
         public async Task ReturnsTrueIfTokenMatches()
         {
-            var tracker = AlwaysTrue();
+            var tracker = AlwaysSuccess();
             var token = new Token("token", tracker.Object);
 
             var actual = await token.HandleAsync(new[] {"token"});
 
-            actual.Should().BeTrue();
+            actual.Should().BeNull();
             tracker.Verify(x => x.HandleAsync(It.IsAny<string[]>()), Times.Once());
         }
 
-        [Test]
+        [Fact]
         public async Task PassesArgumentForwardWithoutMatchedToken()
         {
-            var tracker = AlwaysTrue();
+            var tracker = AlwaysSuccess();
             var token = new Token("token", tracker.Object);
 
             await token.HandleAsync(new[] {"token"});

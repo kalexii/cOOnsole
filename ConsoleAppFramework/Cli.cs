@@ -5,7 +5,7 @@ using Dawn;
 
 namespace ConsoleAppFramework
 {
-    public class Cli : IHandler
+    public class Cli
     {
         private readonly IHandler _handler;
         private readonly IWritableWindow _window;
@@ -18,15 +18,17 @@ namespace ConsoleAppFramework
 
         public async Task<bool> HandleAsync(string[] argument)
         {
-            if (!await _handler.HandleAsync(argument))
+            var errorScope = await _handler.HandleAsync(argument);
+            if (errorScope is null)
             {
-                PrintSelf();
+                return true;
             }
 
-            return true;
+            PrintSelf(null, errorScope);
+            return false;
         }
 
-        public void PrintSelf(IPrinter? printer = null)
+        public void PrintSelf(IPrinter? printer = null, IHandler? root = null)
         {
             printer ??= new Printer(_window);
 
@@ -43,7 +45,7 @@ namespace ConsoleAppFramework
                .NewLine();
 
             printer.Indent();
-            _handler.PrintSelf(printer);
+            (root ?? _handler).PrintSelf(printer);
             printer.Unindent();
         }
     }

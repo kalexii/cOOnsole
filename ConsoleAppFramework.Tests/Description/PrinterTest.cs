@@ -5,15 +5,14 @@ using ConsoleAppFramework.Description;
 using ConsoleAppFramework.Tests.TestUtilities;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using static ConsoleAppFramework.Shortcuts;
 
 namespace ConsoleAppFramework.Tests.Description
 {
-    [TestFixture]
     public class PrinterTest : ResourceAssistedTest
     {
-        [Test]
+        [Fact]
         public void Test1()
         {
             var noop = Action("noop", _ => { });
@@ -24,7 +23,7 @@ namespace ConsoleAppFramework.Tests.Description
             Execute(reaction);
         }
 
-        [Test]
+        [Fact]
         public void Test2()
         {
             var noop = Action("noop", _ => { });

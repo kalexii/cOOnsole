@@ -10,5 +10,8 @@ namespace ConsoleAppFramework
         public static Fork Fork(string description, params IHandler[] reactions) => new(description, reactions);
 
         public static ActionDelegate Action(string description, Action<string[]> action) => new(description, action);
+
+        public static ParametrizedActionDelegate<T> Action<T>(string description, Action<T> action)
+            where T : new() => new(description, action);
     }
 }

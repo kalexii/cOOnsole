@@ -1,25 +1,19 @@
 ﻿using System.Threading.Tasks;
-using ConsoleAppFramework.Description;
-using JetBrains.Annotations;
 
 namespace ConsoleAppFramework
 {
     /// <summary>
-    /// Represents abstract reaction to the input.
+    ///     Represents abstract reaction to the input.
     /// </summary>
-    public interface IHandler
+    public interface IHandler : IPrintable
     {
-        /// <summary>
-        /// Base method that represents the reaction to the input.
-        /// </summary>
-        /// <param name="args">The input to react to.</param>
-        /// <returns>Returns true if input has been handled, otherwise false.</returns>
-        Task<bool> HandleAsync([NotNull] string[] args);
+        void SetContext(HandlerContext context);
 
         /// <summary>
-        /// Method that gets called whenever help message is generated.
+        ///     Base method that represents the reaction to the input.
         /// </summary>
-        /// <param name="printer">The printer.</param>
-        void PrintSelf([NotNull] IPrinter printer);
+        /// <param name="arguments">The input to react to.</param>
+        /// <returns>In case of error, returns handler that errored out. In case of success, null is returned.</returns>
+        Task<IHandler?> HandleAsync(string[] arguments);
     }
 }

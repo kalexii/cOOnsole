@@ -38,5 +38,11 @@
             _isNewLine = true;
             return this;
         }
+
+        public IPrinter Flush()
+        {
+            _window.TextWriter.Flush();
+            return this;
+        }
     }
 }

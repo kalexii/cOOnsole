@@ -1,12 +1,22 @@
-﻿namespace cOOnsole.Description
+﻿using System;
+
+namespace cOOnsole.Description
 {
     public class Printer : IPrinter
     {
-        private readonly IWritableWindow _window;
-        private int _indent;
-        private bool _isNewLine = true;
+        private readonly IWritableOutput _output;
 
-        public Printer(IWritableWindow window) => _window = window;
+        /// <summary>
+        /// Current indentation level.
+        /// </summary>
+        private int _indent;
+
+        /// <summary>
+        /// Represents whether the last char is a new line character (this means we need to add the padding if indent > 0).
+        /// </summary>
+        private bool _atNewLine = true;
+
+        public Printer(IWritableOutput window) => _output = window;
 
         public IPrinter Indent()
         {
@@ -22,26 +32,28 @@
 
         public IPrinter Print(string value)
         {
-            if (_isNewLine)
+            if (_atNewLine)
             {
-                _window.TextWriter.Write(new string(' ', _indent * 2));
-                _isNewLine = false;
+                var indentationCharacterCount = Math.Max(0, _indent * 2);
+                var leftPaddingString = new string(' ', indentationCharacterCount);
+                _output.TextWriter.Write(leftPaddingString);
+                _atNewLine = false;
             }
 
-            _window.TextWriter.Write(value);
+            _output.TextWriter.Write(value);
             return this;
         }
 
         public IPrinter NewLine()
         {
-            _window.TextWriter.WriteLine();
-            _isNewLine = true;
+            _output.TextWriter.WriteLine();
+            _atNewLine = true;
             return this;
         }
 
         public IPrinter Flush()
         {
-            _window.TextWriter.Flush();
+            _output.TextWriter.Flush();
             return this;
         }
 

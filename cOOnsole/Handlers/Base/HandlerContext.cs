@@ -1,6 +1,6 @@
 using cOOnsole.Description;
 
-namespace cOOnsole
+namespace cOOnsole.Handlers.Base
 {
     /// <summary>
     /// Represents a context that is accessible to each handler.

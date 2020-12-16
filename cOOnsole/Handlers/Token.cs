@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using cOOnsole.Description;
+using cOOnsole.Handlers.Base;
 
-namespace cOOnsole.Reactions
+namespace cOOnsole.Handlers
 {
     public class Token : Handler
     {
@@ -28,9 +29,10 @@ namespace cOOnsole.Reactions
 
         public override void PrintSelf(IPrinter printer)
         {
-            printer.Indent().Print(_token).NewLine().Indent();
+            printer.Print(_token).NewLine();
+            printer.Indent();
             _inner.PrintSelf(printer);
-            printer.Unindent().Unindent().NewLine();
+            printer.Unindent().NewLine();
         }
     }
 }

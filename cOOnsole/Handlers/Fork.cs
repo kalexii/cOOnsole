@@ -1,18 +1,14 @@
 ﻿using System.Threading.Tasks;
 using cOOnsole.Description;
+using cOOnsole.Handlers.Base;
 
-namespace cOOnsole.Reactions
+namespace cOOnsole.Handlers
 {
     public class Fork : Handler
     {
-        private readonly string? _description;
         private readonly IHandler[] _handlers;
 
-        public Fork(string? description, params IHandler[] handlers)
-        {
-            _handlers = handlers;
-            _description = description;
-        }
+        public Fork(params IHandler[] handlers) => _handlers = handlers;
 
         public override void SetContext(HandlerContext context)
         {
@@ -28,7 +24,7 @@ namespace cOOnsole.Reactions
             foreach (var reaction in _handlers)
             {
                 var result = await reaction.HandleAsync(arguments);
-                if (result.Status != HandleStatus.NotHandled)
+                if (result != HandleResult.NotHandled)
                 {
                     return result;
                 }
@@ -39,17 +35,10 @@ namespace cOOnsole.Reactions
 
         public override void PrintSelf(IPrinter printer)
         {
-            if (_description is not null)
-            {
-                printer.Print(_description).NewLine().NewLine().Indent();
-            }
-
             foreach (var reaction in _handlers)
             {
                 reaction.PrintSelf(printer);
             }
-
-            printer.Unindent();
         }
     }
 }

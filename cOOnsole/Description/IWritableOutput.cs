@@ -2,7 +2,7 @@
 
 namespace cOOnsole.Description
 {
-    public interface IWritableWindow
+    public interface IWritableOutput
     {
         TextWriter TextWriter { get; }
     }

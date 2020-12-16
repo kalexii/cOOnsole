@@ -24,7 +24,7 @@ namespace cOOnsole.ArgumentParsing
         {
             var result = new T();
             var context = new ParserContext(result, _properties.Value);
-            var parser = new ParserMachine(context);
+            var parser = new ParserStateMachine(context);
             parser.ParseAndPopulate(arguments);
             return (result, context);
         }
@@ -52,6 +52,14 @@ namespace cOOnsole.ArgumentParsing
                 parts.Select(x => x.Description).Max(x => x.Length),
             };
 
+            static void PrintPart(IPrinter printer, ParameterParts parts, IReadOnlyList<int> requiredMaxLengths) =>
+                printer.Print(new StringBuilder()
+                   .Append(parts.Name.PadLeft(requiredMaxLengths[0]))
+                   .Append(" : ")
+                   .Append(parts.Type.PadRight(requiredMaxLengths[1]))
+                   .Append(" # ")
+                   .Append(parts.Description.PadRight(requiredMaxLengths[2])).ToString()).NewLine();
+
             var requiredParts = required.ConvertAll(ToParts);
             printer.Print("required arguments:").NewLine().Indent();
             foreach (var parts in requiredParts)
@@ -70,13 +78,5 @@ namespace cOOnsole.ArgumentParsing
 
             printer.NewLine().Unindent();
         }
-
-        private static void PrintPart(IPrinter printer, ParameterParts parts, int[] requiredMaxLengths) =>
-            printer.Print(new StringBuilder()
-               .Append(parts.Name.PadLeft(requiredMaxLengths[0]))
-               .Append(" : ")
-               .Append(parts.Type.PadRight(requiredMaxLengths[1]))
-               .Append(" # ")
-               .Append(parts.Description.PadRight(requiredMaxLengths[2])).ToString()).NewLine();
     }
 }

@@ -1,6 +1,6 @@
 namespace cOOnsole.ArgumentParsing.Conversions
 {
-    internal interface IStringConverter
+    internal interface IStringToTypeConverter
     {
         object Convert(string token);
     }

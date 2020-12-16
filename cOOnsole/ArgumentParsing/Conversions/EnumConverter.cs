@@ -2,7 +2,7 @@ using System;
 
 namespace cOOnsole.ArgumentParsing.Conversions
 {
-    internal class EnumConverter : IStringConverter
+    internal class EnumConverter : IStringToTypeConverter
     {
         private readonly Type _enumType;
 

@@ -1,5 +1,6 @@
 using System;
-using cOOnsole.Reactions;
+using cOOnsole.Handlers;
+using cOOnsole.Handlers.Base;
 
 namespace cOOnsole
 {
@@ -8,11 +9,11 @@ namespace cOOnsole
         public static Token Token(string token, IHandler handler)
             => new(token, handler);
 
-        public static Fork Fork(string description, params IHandler[] reactions)
+        public static ForkWithDescription Fork(string description, params IHandler[] reactions)
             => new(description, reactions);
 
         public static Fork Fork(params IHandler[] reactions)
-            => new(null, reactions);
+            => new(reactions);
 
         public static ActionDelegate Action(string description, Action<string[], HandlerContext> action)
             => new(description, action);

@@ -1,20 +1,20 @@
-using System;
 using System.Threading.Tasks;
+using cOOnsole.Handlers.Base;
 using Moq;
 
 namespace cOOnsole.Tests.TestUtilities
 {
     public static class ReactionMocks
     {
-        private static Mock<IHandler> Always(Func<Mock<IHandler>, HandleResult> result) => new Mock<IHandler>()
+        private static Mock<IHandler> Always(HandleResult result) => new Mock<IHandler>()
            .Do(mock => mock
                .Setup(x => x.HandleAsync(It.IsAny<string[]>()))
-               .Returns(Task.FromResult(result(mock))));
+               .Returns(Task.FromResult(result)));
 
-        public static Mock<IHandler> AlwaysHandled() => Always(_ => HandleResult.Handled);
+        public static Mock<IHandler> AlwaysHandled() => Always(HandleResult.Handled);
 
-        public static Mock<IHandler> AlwaysError() => Always(x => HandleResult.Error(x.Object));
-        
-        public static Mock<IHandler> AlwaysNotHandled() => Always(_ => HandleResult.NotHandled);
+        public static Mock<IHandler> AlwaysError() => Always(HandleResult.Error);
+
+        public static Mock<IHandler> AlwaysNotHandled() => Always(HandleResult.NotHandled);
     }
 }

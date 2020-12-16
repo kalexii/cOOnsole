@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using cOOnsole.Description;
 
-namespace cOOnsole
+namespace cOOnsole.Handlers.Base
 {
     /// <summary>
     ///     Represents abstract reaction to the input.

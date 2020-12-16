@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using cOOnsole.Description;
 
-namespace cOOnsole
+namespace cOOnsole.Handlers.Base
 {
     /// <summary>
     /// Bare minimum handler implementation that provides context to the descendants.

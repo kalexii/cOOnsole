@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using cOOnsole.Utilities;
 
-namespace cOOnsole.ArgumentParsing.StateMachineParsing
+namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 {
     internal class ExpectingArgumentNameState : IParserState
     {

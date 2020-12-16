@@ -3,7 +3,7 @@ using System.IO;
 
 namespace cOOnsole.Description
 {
-    public class ConsoleWindow : IWritableWindow
+    public class ConsoleWindow : IWritableOutput
     {
         public TextWriter TextWriter => Console.Out;
     }

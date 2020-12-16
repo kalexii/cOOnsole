@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using cOOnsole.Reactions;
+using cOOnsole.Handlers;
+using cOOnsole.Handlers.Base;
 using cOOnsole.Tests.TestUtilities;
 using Moq;
 using Xunit;
 using static cOOnsole.Tests.TestUtilities.ReactionMocks;
 
-namespace cOOnsole.Tests.Reactions
+namespace cOOnsole.Tests.Handlers
 {
     public class ForkTests
     {
@@ -15,7 +16,7 @@ namespace cOOnsole.Tests.Reactions
         {
             var falsePath = AlwaysNotHandled();
             var truePath = AlwaysHandled();
-            var fork = new Fork("test", falsePath.Object, truePath.Object);
+            var fork = new Fork(falsePath.Object, truePath.Object);
 
             fork.HandleAsync(Array.Empty<string>());
 
@@ -31,9 +32,9 @@ namespace cOOnsole.Tests.Reactions
                .Returns(Task.FromResult(HandleResult.Handled)));
             var falsePath = new Mock<IHandler>().Do(mock => mock
                .Setup(x => x.HandleAsync(It.IsAny<string[]>()))
-               .Returns(Task.FromResult(HandleResult.Error(mock.Object))));
+               .Returns(Task.FromResult(HandleResult.Error)));
 
-            var fork = new Fork("test", truePath.Object, falsePath.Object);
+            var fork = new Fork(truePath.Object, falsePath.Object);
 
             fork.HandleAsync(Array.Empty<string>());
 

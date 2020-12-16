@@ -7,7 +7,7 @@ namespace cOOnsole.Tests.TestUtilities
 {
     public class ResourceAssistedTest
     {
-        protected string GetExpected([CallerMemberName] string? caller = null, string extension = ".txt")
+        protected string AsExpectedForThisTest([CallerMemberName] string? caller = null, string extension = ".txt")
         {
             var assembly = GetType().Assembly;
             var resourceName = assembly.GetManifestResourceNames().FirstOrDefault(x => x.EndsWith(caller + extension));

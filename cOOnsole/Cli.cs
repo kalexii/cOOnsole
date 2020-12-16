@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using cOOnsole.Description;
+using cOOnsole.Handlers.Base;
 
 namespace cOOnsole
 {
@@ -11,7 +12,7 @@ namespace cOOnsole
         private readonly IHandler _root;
         private readonly IPrinter _printer;
 
-        public Cli(IHandler root, IWritableWindow? window = null)
+        public Cli(IHandler root, IWritableOutput? window = null)
         {
             _root = root;
             _printer = new Printer(window ?? new ConsoleWindow());
@@ -22,15 +23,12 @@ namespace cOOnsole
         {
             try
             {
-                var (result, errorScope) = await _root.HandleAsync(argument);
+                var result = await _root.HandleAsync(argument);
                 switch (result)
                 {
-                    case HandleStatus.NotHandled:
+                    case HandleResult.NotHandled:
+                    case HandleResult.Error:
                         PrintSelf();
-                        return false;
-
-                    case HandleStatus.Error:
-                        PrintSelf(errorScope);
                         return false;
 
                     default:
@@ -39,8 +37,7 @@ namespace cOOnsole
             }
             catch (Exception e)
             {
-                _printer.ResetIndent();
-                _printer.Print(e.ToStringDemystified());
+                _printer.ResetIndent().Print(e.ToStringDemystified());
                 return false;
             }
         }
@@ -60,8 +57,8 @@ namespace cOOnsole
                    .NewLine()
                    .Print("Usage:")
                    .NewLine()
-                   .NewLine();
-                _printer.Indent();
+                   .NewLine()
+                   .Indent();
             }
 
             (root ?? _root).PrintSelf(_printer);

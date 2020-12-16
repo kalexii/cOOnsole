@@ -8,7 +8,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
 {
     internal sealed class ParserContext
     {
-        private readonly Dictionary<Type, IStringConverter> _converters = new();
+        private readonly Dictionary<Type, IStringToTypeConverter> _converters = new();
         private readonly Dictionary<string, ArgumentProp> _arguments = new();
         private readonly HashSet<ArgumentProp> _required = new();
         private readonly HashSet<ArgumentProp> _populated = new();
@@ -36,7 +36,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             }
         }
 
-        public IReadOnlyList<ArgumentProp> GetUnpopulatedRequired() => _required.Except(_populated).ToList();
+        public IReadOnlyList<ArgumentProp> GetMissingRequired() => _required.Except(_populated).ToList();
 
         public object Target { get; }
 
@@ -45,12 +45,14 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
         public ArgumentProp? FindArgumentByToken(string token)
             => _arguments.TryGetValue(token, out var prop) ? prop : default;
 
-        public IStringConverter GetOrAddConverter(Type type)
+        public object Convert(string value, Type toType) => GetOrAddConverter(toType).Convert(value);
+
+        public IStringToTypeConverter GetOrAddConverter(Type type)
         {
-            IStringConverter MakeConverter() => type.GetUnderlyingNullableOrThis() switch
+            IStringToTypeConverter MakeConverter() => type.GetUnderlyingNullableOrThis() switch
             {
                 {IsEnum: true} t => new EnumConverter(t),
-                { } t when typeof(IConvertible).IsAssignableFrom(t) => new ConvertConverter(t),
+                { } t when typeof(IConvertible).IsAssignableFrom(t) => new ConvertibleConverter(t),
                 var _ => throw new NotSupportedException($"Unable to convert values of type {type}."),
             };
 

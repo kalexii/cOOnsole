@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using cOOnsole.Reactions;
+using cOOnsole.Handlers;
+using cOOnsole.Handlers.Base;
 using FluentAssertions;
 using Moq;
 using Xunit;
 using static cOOnsole.Tests.TestUtilities.ReactionMocks;
 
-namespace cOOnsole.Tests.Reactions
+namespace cOOnsole.Tests.Handlers
 {
     public class TokenTests
     {

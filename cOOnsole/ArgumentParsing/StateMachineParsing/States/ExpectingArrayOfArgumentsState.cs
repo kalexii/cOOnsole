@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace cOOnsole.ArgumentParsing.StateMachineParsing
+namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 {
-    internal class ExpectingArrayOfArgumentsState : IParserState
+    internal class ExpectingArrayOfArgumentsState : IParserState, IFlushable
     {
         private readonly ParserContext _context;
         private readonly string _key;
@@ -40,7 +40,8 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             var typeArg = p.PropertyType.HasElementType
                 ? p.PropertyType.GetElementType()!
                 : p.PropertyType.GetGenericArguments().FirstOrDefault() ?? typeof(string);
-            var items = Captured.Select(x => _context.GetOrAddConverter(typeArg).Convert(x)).ToList();
+            var converter = _context.GetOrAddConverter(typeArg);
+            var items = Captured.Select(x => converter.Convert(x)).ToList();
 
             object value;
 
@@ -56,7 +57,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
                     value = array;
                     break;
 
-                case { } t when typeof(IList).IsAssignableFrom(t):
+                case { } t when t.IsAssignableFrom(typeof(List<>).MakeGenericType(typeArg)):
                     var list = (IList) Activator.CreateInstance(typeof(List<>).MakeGenericType(typeArg));
                     items.ForEach(x => list.Add(x));
                     value = list;

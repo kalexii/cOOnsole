@@ -1,6 +1,6 @@
-namespace cOOnsole.ArgumentParsing.StateMachineParsing
+namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 {
-    internal class ExpectingArgumentValueState : IParserState
+    internal class ExpectingArgumentValueState : IParserState, IFlushable
     {
         private readonly ParserContext _context;
         private readonly string _key;
@@ -12,9 +12,9 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             Argument = argument;
         }
 
-        public ArgumentProp Argument { get; }
+        private ArgumentProp Argument { get; }
 
-        public string? Captured { get; private set; }
+        private string? Captured { get; set; }
 
         public IParserState ParseToken(string token)
         {
@@ -33,10 +33,9 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
                 return;
             }
 
-            var converter = _context.GetOrAddConverter(p.PropertyType);
             try
             {
-                p.SetValue(_context.Target, converter.Convert(Captured));
+                p.SetValue(_context.Target, _context.Convert(Captured, p.PropertyType));
                 _context.SaveAttempt(attempt);
             }
             catch

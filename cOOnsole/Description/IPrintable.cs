@@ -1,6 +1,4 @@
-using cOOnsole.Description;
-
-namespace cOOnsole
+namespace cOOnsole.Description
 {
     public interface IPrintable
     {

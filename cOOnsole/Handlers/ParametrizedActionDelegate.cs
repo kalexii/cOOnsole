@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using cOOnsole.ArgumentParsing;
 using cOOnsole.ArgumentParsing.StateMachineParsing;
 using cOOnsole.Description;
+using cOOnsole.Handlers.Base;
 
-namespace cOOnsole.Reactions
+namespace cOOnsole.Handlers
 {
     public class ParametrizedActionDelegate<T> : Handler where T : new()
     {
@@ -27,7 +28,7 @@ namespace cOOnsole.Reactions
             {
                 var printer = Context.Printer;
                 printer.Print("Error!").NewLine().Indent();
-                foreach (var (_, attemptedKey, attemptedValue, errorKind) in errors)
+                foreach (var (_, key, value, errorKind) in errors)
                 {
                     const string? usage = "please, refer to the usage again";
                     var message = errorKind switch
@@ -37,19 +38,19 @@ namespace cOOnsole.Reactions
                         ParsingErrorKind.ValueIsMissing
                             => "value is not provided for option",
                         ParsingErrorKind.ValueCouldNotBeParsedToType
-                            => $"value \"{attemptedValue.ToString()}\" could not be converted to the parameter type. {usage}",
+                            => $"value \"{value.ToString()}\" could not be converted to the parameter type. {usage}",
                         var _ => throw new ArgumentOutOfRangeException(),
                     };
 
-                    printer.Print($"{attemptedKey}: {message}").NewLine();
+                    printer.Print($"{key}: {message}").NewLine();
                 }
 
                 printer.NewLine();
 
-                return Task.FromResult(HandleResult.Error(this));
+                return Task.FromResult(HandleResult.Error);
             }
 
-            var missingRequireds = context.GetUnpopulatedRequired();
+            var missingRequireds = context.GetMissingRequired();
             if (missingRequireds.Count > 0)
             {
                 var printer = Context.Printer;
@@ -61,7 +62,7 @@ namespace cOOnsole.Reactions
 
                 printer.NewLine();
 
-                return Task.FromResult(HandleResult.Error(this));
+                return Task.FromResult(HandleResult.Error);
             }
 
             _action(typedArgument, Context);

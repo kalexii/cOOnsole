@@ -1,8 +1,0 @@
-  root fork
-
-      token a
-        noop
-
-      token b, longer
-        noop
-

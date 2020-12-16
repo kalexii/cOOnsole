@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+        <AssemblyName>cOOnsole</AssemblyName>
+        <RootNamespace>cOOnsole</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="IsExternalInit" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+      <PackageReference Include="kalexi.Monads.Either" Version="1.0.14" />
+    </ItemGroup>
+
+</Project>

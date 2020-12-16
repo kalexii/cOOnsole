@@ -5,12 +5,25 @@ using cOOnsole.Handlers.Base;
 
 namespace cOOnsole.Handlers
 {
-    public class ActionDelegate : Handler
+    public class Unconditional : Handler
+    {
+        private readonly HandleResult _result;
+
+        public Unconditional(HandleResult result) => _result = result;
+
+        public override void PrintSelf(IPrinter printer)
+        {
+        }
+
+        public override Task<HandleResult> HandleAsync(string[] arguments) => Task.FromResult(_result);
+    }
+
+    public class Action : Handler
     {
         private readonly string _description;
         private readonly Action<string[], HandlerContext> _action;
 
-        public ActionDelegate(string description, Action<string[], HandlerContext> action)
+        public Action(string description, Action<string[], HandlerContext> action)
         {
             _description = description;
             _action = action;

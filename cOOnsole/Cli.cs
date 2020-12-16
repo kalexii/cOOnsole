@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 using cOOnsole.Description;
 using cOOnsole.Handlers.Base;
@@ -28,7 +27,6 @@ namespace cOOnsole
                 {
                     case HandleResult.NotHandled:
                     case HandleResult.Error:
-                        PrintSelf();
                         return false;
 
                     default:
@@ -40,29 +38,6 @@ namespace cOOnsole
                 _printer.ResetIndent().Print(e.ToStringDemystified());
                 return false;
             }
-        }
-
-        public void PrintSelf(IHandler? root = null)
-        {
-            _printer.ResetIndent();
-            if (root == null || root == _root)
-            {
-                var assembly = Assembly.GetEntryAssembly();
-                var version = assembly
-                  ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                  ?.InformationalVersion;
-
-                _printer
-                   .Print($"{assembly!.GetName().Name} v{version}")
-                   .NewLine()
-                   .Print("Usage:")
-                   .NewLine()
-                   .NewLine()
-                   .Indent();
-            }
-
-            (root ?? _root).PrintSelf(_printer);
-            _printer.Flush();
         }
     }
 }

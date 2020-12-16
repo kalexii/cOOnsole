@@ -50,7 +50,7 @@ namespace cOOnsole.Handlers
                 return Task.FromResult(HandleResult.Error);
             }
 
-            var missingRequireds = context.GetMissingRequired();
+            var missingRequireds = context.NotPopulatedRequired;
             if (missingRequireds.Count > 0)
             {
                 var printer = Context.Printer;

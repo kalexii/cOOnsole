@@ -8,6 +8,7 @@ namespace cOOnsole.Tests.ArgumentParsing
 {
     public class ObjectParsingTests : ResourceAssistedTest
     {
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         private enum Option
         {
             First,
@@ -34,19 +35,19 @@ namespace cOOnsole.Tests.ArgumentParsing
             public int[] IntArrayParam { get; set; } = default!;
 
             [Argument("--obool", Description = "This is my optional bool parameter")]
-            public bool? OptionalBoolParam { get; set; } = default!;
+            public bool? OptionalBoolParam { get; set; }
 
             [Argument("--ostr", Description = "This is my optional string parameter")]
-            public string? OptionalStringParam { get; set; } = default!;
+            public string? OptionalStringParam { get; set; }
 
             [Argument("--oint", Description = "This is my optional int parameter")]
-            public int? OptionalIntParam { get; set; } = default!;
+            public int? OptionalIntParam { get; set; }
 
             [Argument("--oenum", Description = "This is my optional enum parameter")]
-            public Option? OptionalEnumParam { get; set; } = default!;
+            public Option? OptionalEnumParam { get; set; }
 
             [Argument("--ointArray", "-oia", Description = "This is my int array parameter")]
-            public int[]? OptionalIntArrayParam { get; set; } = default!;
+            public int[]? OptionalIntArrayParam { get; set; }
         }
 
         [Fact]
@@ -63,7 +64,7 @@ namespace cOOnsole.Tests.ArgumentParsing
             });
 
             context.ErrorAttempts.Should().BeEmpty();
-            context.GetMissingRequired().Should().BeEmpty();
+            context.NotPopulatedRequired.Should().BeEmpty();
 
             result.Should().BeEquivalentTo(new ComplexArg
             {

@@ -11,7 +11,7 @@ namespace cOOnsole.Tests.ArgumentParsing
         {
             var (result, context) = Parser<T>().Parse(items);
             context.ErrorAttempts.Should().BeEmpty();
-            context.GetMissingRequired().Should().BeEmpty();
+            context.NotPopulatedRequired.Should().BeEmpty();
             return result;
         }
     }

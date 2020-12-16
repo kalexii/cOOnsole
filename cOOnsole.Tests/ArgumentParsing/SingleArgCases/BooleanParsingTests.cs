@@ -14,6 +14,10 @@ namespace cOOnsole.Tests.ArgumentParsing.SingleArgCases
             public bool MyProp { get; set; }
         }
 
+        [Fact]
+        public void AllowsOmissionOfRequiredBooleanDefaultingToFalse()
+            => Parse<BasicArg>().Should().BeEquivalentTo(new BasicArg {MyProp = false});
+
         [Theory]
         [InlineData("--long")]
         [InlineData("-s")]

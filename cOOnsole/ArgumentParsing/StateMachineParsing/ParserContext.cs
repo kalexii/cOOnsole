@@ -11,7 +11,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
         private readonly Dictionary<Type, IStringToTypeConverter> _converters = new();
         private readonly Dictionary<string, ArgumentProp> _arguments = new();
         private readonly HashSet<ArgumentProp> _required = new();
-        private readonly HashSet<ArgumentProp> _populated = new();
+        private readonly HashSet<ArgumentProp> _notPopulatedRequired = new();
         private readonly List<ParseAttempt> _parseAttempts = new();
 
         public ParserContext(object target, IReadOnlyList<ArgumentProp> props)
@@ -22,8 +22,16 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
                 var pair = props[i];
                 _arguments[pair.Argument.LongName] = pair;
 
-                if (pair.Argument.ShortName is { } sn) _arguments[sn] = pair;
-                if (pair.IsRequired) _required.Add(pair);
+                if (pair.Argument.ShortName is { } sn)
+                {
+                    _arguments[sn] = pair;
+                }
+
+                if (pair.IsRequired && pair.Property.PropertyType.GetUnderlyingNullableOrThis() != typeof(bool))
+                {
+                    _required.Add(pair);
+                    _notPopulatedRequired.Add(pair);
+                }
             }
         }
 
@@ -32,11 +40,11 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             _parseAttempts.Add(attempt);
             if (attempt.ErrorKind is null && attempt.Argument is not null)
             {
-                _populated.Add(attempt.Argument);
+                _notPopulatedRequired.Remove(attempt.Argument);
             }
         }
 
-        public IReadOnlyList<ArgumentProp> GetMissingRequired() => _required.Except(_populated).ToList();
+        public ISet<ArgumentProp> NotPopulatedRequired => _notPopulatedRequired;
 
         public object Target { get; }
 

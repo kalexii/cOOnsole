@@ -5,33 +5,26 @@ using cOOnsole.Handlers.Base;
 
 namespace cOOnsole.Handlers
 {
-    public class Token : Handler
+    public sealed class Token : Handler
     {
-        private readonly IHandler _inner;
         private readonly string _token;
 
-        public Token(string token, IHandler inner)
+        public Token(string token, IHandler child)
         {
             _token = token;
-            _inner = inner;
+            Child = child;
         }
 
         public override Task<HandleResult> HandleAsync(string[] argument)
             => argument.Length > 0 && string.Equals(argument[0], _token, StringComparison.OrdinalIgnoreCase)
-                ? _inner.HandleAsync(argument[1..])
+                ? Child.HandleAsync(argument[1..])
                 : Task.FromResult(HandleResult.NotHandled);
-
-        public override void SetContext(HandlerContext context)
-        {
-            base.SetContext(context);
-            _inner.SetContext(context);
-        }
 
         public override void PrintSelf(IPrinter printer)
         {
             printer.Print(_token).NewLine();
             printer.Indent();
-            _inner.PrintSelf(printer);
+            Child.PrintSelf(printer);
             printer.Unindent().NewLine();
         }
     }

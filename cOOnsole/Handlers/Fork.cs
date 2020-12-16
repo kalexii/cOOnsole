@@ -6,14 +6,12 @@ namespace cOOnsole.Handlers
 {
     public class Fork : Handler
     {
-        private readonly IHandler[] _handlers;
-
-        public Fork(params IHandler[] handlers) => _handlers = handlers;
+        public Fork(params IHandler[] children) => Children = children;
 
         public override void SetContext(HandlerContext context)
         {
             base.SetContext(context);
-            foreach (var handler in _handlers)
+            foreach (var handler in Children)
             {
                 handler.SetContext(context);
             }
@@ -21,7 +19,7 @@ namespace cOOnsole.Handlers
 
         public override async Task<HandleResult> HandleAsync(string[] arguments)
         {
-            foreach (var reaction in _handlers)
+            foreach (var reaction in Children)
             {
                 var result = await reaction.HandleAsync(arguments);
                 if (result != HandleResult.NotHandled)
@@ -35,7 +33,7 @@ namespace cOOnsole.Handlers
 
         public override void PrintSelf(IPrinter printer)
         {
-            foreach (var reaction in _handlers)
+            foreach (var reaction in Children)
             {
                 reaction.PrintSelf(printer);
             }

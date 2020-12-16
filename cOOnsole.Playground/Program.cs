@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using cOOnsole.ArgumentParsing;
+using cOOnsole.Handlers.Base;
 using static cOOnsole.Shortcuts;
 
 namespace cOOnsole.Playground
@@ -49,11 +50,12 @@ namespace cOOnsole.Playground
         }
 
         public static Task Main(string[] args) => new Cli(
-            Fork(
-                Token("command1", Action("my action description 1", (_, _) => { })),
-                Token("command2", Action("my action description 2", (_, _) => { })),
-                Token("command3", Action<Params>("my typed action description", (a, _) => PrintIndented(a))),
-                Token("help", Action("prints help", (_, c) => { c.Cli.PrintSelf(); }))
+            PrintUsage(
+                Fork(
+                    Token("command1", Action("my action description 1", (_, _) => { })),
+                    Token("command2", Action("my action description 2", (_, _) => { })),
+                    Token("command3", Action<Params>("my typed action description", (a, _) => PrintIndented(a))),
+                    Token("help", Unconditional(HandleResult.NotHandled)))
             )).HandleAsync(args);
 
         private static void PrintIndented(Params a)

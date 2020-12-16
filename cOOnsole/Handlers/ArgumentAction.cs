@@ -7,13 +7,13 @@ using cOOnsole.Handlers.Base;
 
 namespace cOOnsole.Handlers
 {
-    public class ParametrizedActionDelegate<T> : Handler where T : new()
+    public class ArgumentAction<T> : Handler where T : new()
     {
         private readonly string _description;
         private readonly Action<T, HandlerContext> _action;
         private readonly ArgumentParser<T> _parser;
 
-        public ParametrizedActionDelegate(string description, Action<T, HandlerContext> action)
+        public ArgumentAction(string description, Action<T, HandlerContext> action)
         {
             _description = description;
             _action = action;

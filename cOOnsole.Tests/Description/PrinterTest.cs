@@ -12,9 +12,10 @@ namespace cOOnsole.Tests.Description
         {
             var noop = NoopHandler.Handled;
             var handler =
-                Fork("root fork",
-                    Token("token a", noop),
-                    Token("token b, longer", noop));
+                PrintUsage(
+                    Fork(
+                        Token("token a", noop),
+                        Token("token b, longer", noop)));
 
             handler.ExecuteInCliAndCaptureOutput().Should().Be(AsExpectedForThisTest());
         }
@@ -24,12 +25,13 @@ namespace cOOnsole.Tests.Description
         {
             var noop = NoopHandler.Handled;
             var handler =
-                Fork("outer fork",
-                    Fork("inner fork",
-                        Token("root-fork-token1", noop),
-                        Token("root-fork-token2", noop)),
-                    Token("root-token1", noop),
-                    Token("root-token2", noop));
+                PrintUsage(
+                    Fork(
+                        Fork(
+                            Token("root-fork-token1", noop),
+                            Token("root-fork-token2", noop)),
+                        Token("root-token1", noop),
+                        Token("root-token2", noop)));
 
             handler.ExecuteInCliAndCaptureOutput().Should().Be(AsExpectedForThisTest());
         }

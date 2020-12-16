@@ -67,7 +67,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             }
 
             p.SetValue(_context.Target, value);
-            _context.SaveAttempt(new ParseAttempt(Argument, _key, Captured));
+            _context.SaveAttempt(new ParseAttempt(Argument, _key, Captured.ToArray()));
         }
     }
 }

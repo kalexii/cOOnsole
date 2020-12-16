@@ -15,7 +15,7 @@ namespace cOOnsole.Tests.Description
         [Fact]
         public void Test1()
         {
-            var noop = Action("noop", (_, _) => { });
+            var noop = Action("noop", A);
             var reaction = Fork("root fork",
                 Token("token a", noop),
                 Token("token b, longer", noop));
@@ -26,7 +26,7 @@ namespace cOOnsole.Tests.Description
         [Fact]
         public void Test2()
         {
-            var noop = Action("noop", (_, _) => { });
+            var noop = Action("noop", A);
             var reaction = Fork("outer fork",
                 Fork("inner fork",
                     Token("root-fork-token1", noop),
@@ -50,6 +50,10 @@ namespace cOOnsole.Tests.Description
 
             var expected = GetExpected(caller!);
             printed.ToString().Should().Be(expected);
+        }
+
+        private static void A(string[] strings, HandlerContext handlerContext)
+        {
         }
     }
 }

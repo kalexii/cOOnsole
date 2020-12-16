@@ -17,17 +17,20 @@ namespace cOOnsole.Playground
 
         public class Params
         {
-            [Argument("--bool", "-b", Description = "This is my bool parameter")]
+            [Argument("--bool", "-b", Description = "This is my required bool parameter")]
             public bool BoolParam { get; set; } = default!;
 
-            [Argument("--str", "-s", Description = "This is my string parameter")]
+            [Argument("--str", "-s", Description = "This is my required string parameter")]
             public string StringParam { get; set; } = default!;
 
-            [Argument("--int", "-i", Description = "This is my int parameter")]
+            [Argument("--int", "-i", Description = "This is my required int parameter")]
             public int IntParam { get; set; } = default!;
 
-            [Argument("--enum", "-e", Description = "This is my enum parameter")]
+            [Argument("--enum", "-e", Description = "This is my required enum parameter")]
             public Option EnumParam { get; set; } = default!;
+
+            [Argument("--intArray", "-ia", Description = "This is my required int array parameter")]
+            public int[] IntArrayParam { get; set; } = default!;
 
             [Argument("--obool", Description = "This is my optional bool parameter")]
             public bool? OptionalBoolParam { get; set; } = default!;
@@ -40,13 +43,16 @@ namespace cOOnsole.Playground
 
             [Argument("--oenum", Description = "This is my optional enum parameter")]
             public Option? OptionalEnumParam { get; set; } = default!;
+
+            [Argument("--ointArray", "-oia", Description = "This is my int array parameter")]
+            public int[]? OptionalIntArrayParam { get; set; } = default!;
         }
 
         public static Task Main(string[] args) => new Cli(
             Fork(
                 Token("command1", Action("my action description 1", (_, _) => { })),
                 Token("command2", Action("my action description 2", (_, _) => { })),
-                Token("command3", Action<Params>("my typed action", (a, _) => PrintIndented(a))),
+                Token("command3", Action<Params>("my typed action description", (a, _) => PrintIndented(a))),
                 Token("help", Action("prints help", (_, c) => { c.Cli.PrintSelf(); }))
             )).HandleAsync(args);
 

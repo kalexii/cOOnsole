@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 using cOOnsole.Description;
 
@@ -18,19 +20,28 @@ namespace cOOnsole
 
         public async Task<bool> HandleAsync(string[] argument)
         {
-            var (result, errorScope) = await _root.HandleAsync(argument);
-            switch (result)
+            try
             {
-                case HandleStatus.NotHandled:
-                    PrintSelf();
-                    return false;
+                var (result, errorScope) = await _root.HandleAsync(argument);
+                switch (result)
+                {
+                    case HandleStatus.NotHandled:
+                        PrintSelf();
+                        return false;
 
-                case HandleStatus.Error:
-                    PrintSelf(errorScope);
-                    return false;
+                    case HandleStatus.Error:
+                        PrintSelf(errorScope);
+                        return false;
 
-                default:
-                    return true;
+                    default:
+                        return true;
+                }
+            }
+            catch (Exception e)
+            {
+                _printer.ResetIndent();
+                _printer.Print(e.ToStringDemystified());
+                return false;
             }
         }
 

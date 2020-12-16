@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using cOOnsole.ArgumentParsing.Conversions;
 using cOOnsole.Utilities;
-using kalexi.Monads.Either.Code;
 
 namespace cOOnsole.ArgumentParsing.StateMachineParsing
 {
-    internal sealed record ParseAttempt(ArgumentProp? Argument,
-                                        string AttemptedKey,
-                                        Either<string?, List<string>> AttemptedValue,
-                                        ParsingErrorKind? ErrorKind = null);
-
     internal sealed class ParserContext
     {
         private readonly Dictionary<Type, IStringConverter> _converters = new();
@@ -29,8 +23,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
                 _arguments[pair.Argument.LongName] = pair;
 
                 if (pair.Argument.ShortName is { } sn) _arguments[sn] = pair;
-
-                if (!pair.Property.IsNullable()) _required.Add(pair);
+                if (pair.IsRequired) _required.Add(pair);
             }
         }
 
@@ -43,12 +36,11 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             }
         }
 
-        public List<ArgumentProp> GetUnpopulatedRequired() => _required.Except(_populated).ToList();
+        public IReadOnlyList<ArgumentProp> GetUnpopulatedRequired() => _required.Except(_populated).ToList();
 
         public object Target { get; }
 
-        public IReadOnlyList<ParseAttempt> ParseAttempts => _parseAttempts;
-        public IList<ParseAttempt> ErrorAttempts => _parseAttempts.Where(x => x.ErrorKind is not null).ToList();
+        public IReadOnlyList<ParseAttempt> ErrorAttempts => _parseAttempts.Where(x => x.ErrorKind is not null).ToList();
 
         public ArgumentProp? FindArgumentByToken(string token)
             => _arguments.TryGetValue(token, out var prop) ? prop : default;

@@ -29,12 +29,15 @@ namespace cOOnsole.Reactions
                 printer.Print("Error!").NewLine().Indent();
                 foreach (var (_, attemptedKey, attemptedValue, errorKind) in errors)
                 {
+                    const string? usage = "please, refer to the usage again";
                     var message = errorKind switch
                     {
-                        ParsingErrorKind.OptionNotRecognized => "unknown option. please, refer to usage again",
-                        ParsingErrorKind.ValueIsMissing      => "value is not provided for option",
-                        ParsingErrorKind.ValueCouldNotBeParsedToType =>
-                            $"value \"{attemptedValue.Join(x => x, x => string.Join(" ", x))}\" could not be converted to the parameter type. please, refer to usage",
+                        ParsingErrorKind.OptionNotRecognized
+                            => $"unknown option. {usage}",
+                        ParsingErrorKind.ValueIsMissing
+                            => "value is not provided for option",
+                        ParsingErrorKind.ValueCouldNotBeParsedToType
+                            => $"value \"{attemptedValue.ToString()}\" could not be converted to the parameter type. {usage}",
                         var _ => throw new ArgumentOutOfRangeException(),
                     };
 

@@ -1,4 +1,4 @@
-using cOOnsole.Description;
+using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers.Base
 {
@@ -6,5 +6,5 @@ namespace cOOnsole.Handlers.Base
     /// Represents a context that is accessible to each handler.
     /// This context represents shared data across the application handlers.
     /// </summary>
-    public sealed record HandlerContext(Cli Cli, IPrinter Printer);
+    public sealed record HandlerContext(IPrinter Printer);
 }

@@ -1,0 +1,19 @@
+﻿Missing required argument: --str
+Missing required argument: --int
+Missing required argument: --enum
+Missing required argument: --intArray
+
+required arguments:
+       --bool (-b) : Boolean                # This is my required bool parameter
+        --str (-s) : String                 # This is my required string parameter
+        --int (-i) : Int32                  # This is my required int parameter
+       --enum (-e) : First | Second | Third # This is my required enum parameter
+  --intArray (-ia) : Int32[]                # This is my required int array parameter
+
+optional arguments:
+             --obool : Boolean?                  # This is my optional bool parameter
+              --ostr : String?                   # This is my optional string parameter
+              --oint : Int32?                    # This is my optional int parameter
+             --oenum : (First | Second | Third)? # This is my optional enum parameter
+  --ointArray (-oia) : Int32[]?                  # This is my int array parameter
+

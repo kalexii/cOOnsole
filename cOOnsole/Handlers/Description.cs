@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
-using cOOnsole.Description;
 using cOOnsole.Handlers.Base;
+using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
-    public sealed class SectionDescription : Handler
+    public sealed class Description : Handler
     {
         private readonly string _description;
 
-        public SectionDescription(string description, IHandler child)
+        public Description(string description, IHandler child)
         {
             _description = description;
             Child = child;
@@ -19,7 +19,7 @@ namespace cOOnsole.Handlers
 
         public override void PrintSelf(IPrinter printer)
         {
-            printer.Print(_description).NewLine().NewLine().Indent();
+            printer.Print(_description).NewLine().Indent();
             Child.PrintSelf(printer);
             printer.Unindent();
         }

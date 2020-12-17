@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace cOOnsole.Description
+namespace cOOnsole.Printing
 {
     /// <summary>
     /// This interface provides the access to the output stream enhancing it with the indentation capabilities.

@@ -49,11 +49,8 @@ namespace cOOnsole.Utilities
         }
 
         // ReSharper disable once CognitiveComplexity
-        private static bool IsNullableReferenceType(this PropertyInfo property)
+        private static bool IsNullableReferenceType(this MemberInfo property)
         {
-            if (property.PropertyType.IsValueType)
-                throw new ArgumentException("Property must be a reference type", nameof(property));
-
             const string nullableAttribute = "System.Runtime.CompilerServices.NullableAttribute";
             var nullable = property
                .CustomAttributes

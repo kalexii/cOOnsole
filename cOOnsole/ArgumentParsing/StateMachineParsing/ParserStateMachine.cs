@@ -1,4 +1,3 @@
-using System.Linq;
 using cOOnsole.ArgumentParsing.StateMachineParsing.States;
 
 namespace cOOnsole.ArgumentParsing.StateMachineParsing
@@ -12,7 +11,11 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
         public void ParseAndPopulate(string[] arguments)
         {
             IParserState state = new ExpectingArgumentNameState(_context);
-            state = arguments.Aggregate(state, (current, t) => current.ParseToken(t));
+            foreach (var argument in arguments)
+            {
+                state = state.ParseToken(argument);
+            }
+
             if (state is IFlushable f)
             {
                 f.Flush();

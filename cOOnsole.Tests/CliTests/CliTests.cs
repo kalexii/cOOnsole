@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
+using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Tests.TestUtilities;
 using FluentAssertions;
 using Moq;
 using Xunit;
 using static cOOnsole.Shortcuts;
-using Action = cOOnsole.Handlers.Action;
 
 namespace cOOnsole.Tests.CliTests
 {
@@ -16,18 +17,39 @@ namespace cOOnsole.Tests.CliTests
         {
             var action = new Mock<IHandler>();
 
-            new Cli(action.Object);
+            var _ = new Cli(action.Object);
 
             action.Verify(x => x.SetContext(It.IsNotNull<HandlerContext>()), Times.Once());
         }
 
         [Fact]
-        public void StaysSilentIfHandled()
-            => Token("a1", NoopHandler.Handled).ExecuteInCliAndCaptureOutput("a1").Should().Be(string.Empty);
+        public async Task StaysSilentIfHandled()
+        {
+            var tree = Unconditional(HandleResult.Handled);
+            var (handled, printed) = await Token("a1", tree).ExecuteAndCaptureAsync("a1");
+            handled.Should().BeTrue();
+            printed.Should().Be(string.Empty);
+        }
 
         [Fact]
-        public void PrettyPrintsExceptions()
-            => new Action("does stuff", (_, _) => throw new Exception())
-               .ExecuteInCliAndCaptureOutput().Split(Environment.NewLine)[0].Should().Be(AsExpectedForThisTest());
+        public async Task PrettyPrintsExceptions()
+        {
+            var expectation = AsExpectedForThisTest();
+
+            var (handled, printed) = await new UntypedAction((_, _) => throw new Exception()).ExecuteAndCaptureAsync();
+
+            handled.Should().BeFalse();
+            printed.Split(Environment.NewLine)[0].Should().Be(expectation);
+        }
+
+        [Theory]
+        [InlineData(HandleResult.Error)]
+        [InlineData(HandleResult.NotHandled)]
+        public async Task NotSuccessConvertsToFalse(HandleResult stubbedResult)
+        {
+            var tree = Unconditional(stubbedResult);
+            var result = await new Cli(tree).HandleAsync(Array.Empty<string>());
+            result.Should().Be(false);
+        }
     }
 }

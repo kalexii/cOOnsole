@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace cOOnsole.Description
+namespace cOOnsole.Printing
 {
     public class Printer : IPrinter
     {

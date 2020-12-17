@@ -10,10 +10,10 @@ namespace cOOnsole.Handlers
 {
     public class TypedAction<T> : Handler where T : new()
     {
-        private readonly Action<T, HandlerContext> _action;
+        private readonly Action<T, IHandlerContext> _action;
         private readonly ArgumentParser<T> _parser;
 
-        public TypedAction(Action<T, HandlerContext> action)
+        public TypedAction(Action<T, IHandlerContext> action)
         {
             _action = action;
             _parser = new ArgumentParser<T>();

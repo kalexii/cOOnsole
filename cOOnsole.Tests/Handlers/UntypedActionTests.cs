@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Printing;
@@ -12,7 +11,7 @@ namespace cOOnsole.Tests.Handlers
 {
     public class UntypedActionTests
     {
-        public sealed record ActionCall(string[] Arguments, HandlerContext Context);
+        public sealed record ActionCall(string[] Arguments, IHandlerContext Context);
 
         [Fact]
         public async Task ComprehensiveTest() // todo: split into more granular tests

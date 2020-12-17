@@ -5,7 +5,7 @@ using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
-    public sealed class Token : Handler
+    public sealed class Token : SingleChildHandler
     {
         private readonly string _token;
 

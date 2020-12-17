@@ -7,9 +7,9 @@ namespace cOOnsole.Handlers
 {
     public class UntypedAction : Handler
     {
-        private readonly Action<string[], HandlerContext> _action;
+        private readonly Action<string[], IHandlerContext> _action;
 
-        public UntypedAction(Action<string[], HandlerContext> action) => _action = action;
+        public UntypedAction(Action<string[], IHandlerContext> action) => _action = action;
 
         public override Task<HandleResult> HandleAsync(string[] arguments)
         {

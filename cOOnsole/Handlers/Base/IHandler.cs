@@ -8,7 +8,7 @@ namespace cOOnsole.Handlers.Base
     /// </summary>
     public interface IHandler : IPrintable
     {
-        void SetContext(HandlerContext context);
+        void SetContext(IHandlerContext context);
 
         /// <summary>
         ///     Base method that represents the reaction to the input.

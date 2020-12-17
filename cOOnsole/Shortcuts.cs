@@ -21,10 +21,10 @@ namespace cOOnsole
         public static Unconditional Unconditional(HandleResult result)
             => new(result);
 
-        public static UntypedAction Action(Action<string[], HandlerContext> action)
+        public static UntypedAction Action(Action<string[], IHandlerContext> action)
             => new(action);
 
-        public static TypedAction<T> Action<T>(Action<T, HandlerContext> action)
+        public static TypedAction<T> Action<T>(Action<T, IHandlerContext> action)
             where T : new() => new(action);
     }
 }

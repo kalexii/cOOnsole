@@ -4,7 +4,7 @@ using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
-    public sealed class Description : Handler
+    public sealed class Description : SingleChildHandler
     {
         private readonly string _description;
 

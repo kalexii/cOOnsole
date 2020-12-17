@@ -21,18 +21,6 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 
         public List<string> Captured { get; } = new();
 
-        public IParserState ParseToken(string token)
-        {
-            if (_context.FindArgumentByToken(token) is not null)
-            {
-                Flush();
-                return new ExpectingArgumentNameState(_context).ParseToken(token);
-            }
-
-            Captured.Add(token);
-            return this;
-        }
-
         public void Flush()
         {
             var (p, _) = Argument;
@@ -69,6 +57,18 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 
             p.SetValue(_context.Target, value);
             _context.SaveAttempt(new ParseAttempt(Argument, _key, Captured.ToArray()));
+        }
+
+        public IParserState ParseToken(string token)
+        {
+            if (_context.FindArgumentByToken(token) is not null)
+            {
+                Flush();
+                return new ExpectingArgumentNameState(_context).ParseToken(token);
+            }
+
+            Captured.Add(token);
+            return this;
         }
     }
 }

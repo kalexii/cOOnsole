@@ -41,12 +41,10 @@ namespace cOOnsole.Utilities
             return sb.ToString();
         }
 
-        public static bool IsNullable(this PropertyInfo property)
-        {
-            return property.PropertyType.IsValueType
+        public static bool IsNullable(this PropertyInfo property) =>
+            property.PropertyType.IsValueType
                 ? Nullable.GetUnderlyingType(property.PropertyType) != null
                 : property.IsNullableReferenceType();
-        }
 
         // ReSharper disable once CognitiveComplexity
         private static bool IsNullableReferenceType(this MemberInfo property)

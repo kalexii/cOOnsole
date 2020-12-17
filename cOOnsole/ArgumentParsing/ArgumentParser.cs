@@ -20,17 +20,6 @@ namespace cOOnsole.ArgumentParsing
            .Select(pair => new ArgumentProp(pair.Item1, pair.Item2))
            .ToList(), false);
 
-        public (T, ParserContext context) Parse(string[] arguments)
-        {
-            var result = new T();
-            var context = new ParserContext(result, _properties.Value);
-            var parser = new ParserStateMachine(context);
-            parser.ParseAndPopulate(arguments);
-            return (result, context);
-        }
-
-        public sealed record ParameterParts(string Name, string Type, string Description = "");
-
         public void PrintSelf(IPrinter printer)
         {
             var props = _properties.Value;
@@ -38,9 +27,7 @@ namespace cOOnsole.ArgumentParsing
             var notRequired = props.Except(required).ToList();
 
             static ParameterParts ToParts(ArgumentProp pair) => new(
-                pair.Argument.ShortName is null
-                    ? pair.Argument.LongName
-                    : $"{pair.Argument.LongName} ({pair.Argument.ShortName})",
+                string.Join(" | ", pair.Argument.Aliases),
                 pair.Property.ToPrettyTypeName(),
                 pair.Argument.Description ?? ""
             );
@@ -87,5 +74,16 @@ namespace cOOnsole.ArgumentParsing
                 printer.NewLine().Unindent();
             }
         }
+
+        public (T, ParserContext context) Parse(string[] arguments)
+        {
+            var result = new T();
+            var context = new ParserContext(result, _properties.Value);
+            var parser = new ParserStateMachine(context);
+            parser.ParseAndPopulate(arguments);
+            return (result, context);
+        }
+
+        public sealed record ParameterParts(string Name, string Type, string Description = "");
     }
 }

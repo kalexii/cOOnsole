@@ -5,10 +5,18 @@ using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
+    /// <summary>
+    /// This node prints the usage for the application enhancing it with the assembly name and version in case the child handler did not match.
+    /// This is most useful at the root of the handler tree. 
+    /// </summary>
     public class PrintUsageIfUnmatched : SingleChildHandler
     {
-        public PrintUsageIfUnmatched(IHandler child) => Child = child;
+        /// <summary>Initializes an instance of <see cref="PrintUsageIfUnmatched" />.</summary>
+        public PrintUsageIfUnmatched(IHandler wrapped) : base(wrapped)
+        {
+        }
 
+        /// <inheritdoc />
         public override void PrintSelf(IPrinter printer)
         {
             var assembly = Assembly.GetEntryAssembly();
@@ -23,13 +31,14 @@ namespace cOOnsole.Handlers
                .NewLine()
                .NewLine()
                .Indent();
-            Child.PrintSelf(printer);
+            Wrapped.PrintSelf(printer);
         }
 
-        public override async Task<HandleResult> HandleAsync(string[] arguments)
+        /// <inheritdoc />
+        public override async Task<HandleResult> HandleAsync(string[] input)
         {
-            var result = await Child.HandleAsync(arguments).ConfigureAwait(false);
-            if (result == HandleResult.NotHandled)
+            var result = await Wrapped.HandleAsync(input).ConfigureAwait(false);
+            if (result == HandleResult.NotMatched)
             {
                 PrintSelf(Context.Printer);
                 return HandleResult.Handled;

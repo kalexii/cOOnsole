@@ -16,13 +16,6 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 
         private string? Captured { get; set; }
 
-        public IParserState ParseToken(string token)
-        {
-            Captured = token;
-            Flush();
-            return new ExpectingArgumentNameState(_context);
-        }
-
         public void Flush()
         {
             var (p, _) = Argument;
@@ -42,6 +35,13 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
             {
                 _context.SaveAttempt(attempt with {ErrorKind = ParsingErrorKind.ValueCouldNotBeParsedToType});
             }
+        }
+
+        public IParserState ParseToken(string token)
+        {
+            Captured = token;
+            Flush();
+            return new ExpectingArgumentNameState(_context);
         }
     }
 }

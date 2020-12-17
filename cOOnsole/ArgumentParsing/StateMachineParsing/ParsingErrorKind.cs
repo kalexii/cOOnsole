@@ -1,9 +1,9 @@
 namespace cOOnsole.ArgumentParsing.StateMachineParsing
 {
-    public enum ParsingErrorKind
+    internal enum ParsingErrorKind
     {
         OptionNotRecognized,
         ValueCouldNotBeParsedToType,
-        ValueIsMissing
+        ValueIsMissing,
     }
 }

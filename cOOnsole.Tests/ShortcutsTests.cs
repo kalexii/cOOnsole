@@ -23,12 +23,12 @@ namespace cOOnsole.Tests
 
         [Fact]
         public void PrintUsageIfUnmatched() => Shortcuts
-           .PrintUsageIfUnmatched(new Unconditional(HandleResult.NotHandled))
+           .PrintUsageIfUnmatched(new Unconditional(HandleResult.NotMatched))
            .Should().BeOfType<PrintUsageIfUnmatched>();
 
         [Fact]
         public void Unconditional() => Shortcuts
-           .Unconditional(HandleResult.NotHandled)
+           .Unconditional(HandleResult.NotMatched)
            .Should().BeOfType<Unconditional>();
 
         [Fact]

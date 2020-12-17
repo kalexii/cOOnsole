@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace cOOnsole.Description
+namespace cOOnsole.Printing
 {
-    public class ConsoleWindow : IWritableOutput
+    public class ConsoleOutput : IWritableOutput
     {
         public TextWriter TextWriter => Console.Out;
     }

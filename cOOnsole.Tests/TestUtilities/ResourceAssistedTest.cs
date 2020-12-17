@@ -1,19 +1,35 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace cOOnsole.Tests.TestUtilities
 {
     public class ResourceAssistedTest
     {
-        protected string AsExpectedForThisTest([CallerMemberName] string? caller = null, string extension = ".txt")
+        protected string AsExpectedForThisTest(string extension = ".txt")
         {
+            var callerMethod = new StackTrace(1)
+               .GetFrames()
+               .FirstOrDefault(frame => frame?.GetMethod() is {DeclaringType: {Namespace: { } namespacee}} method
+                                        && namespacee.StartsWith(nameof(cOOnsole))
+                                        && method.Name != "MoveNext")? // omit async state machine frames
+               .GetMethod();
+
+            if (callerMethod is null)
+            {
+                throw new InvalidOperationException("Unable to get caller. " +
+                                                    "You are probably in the wrong async context.");
+            }
+
+            var caller = $"{callerMethod.DeclaringType?.Name}.{callerMethod.Name}";
+            var expectedEnding = caller + extension;
             var assembly = GetType().Assembly;
-            var resourceName = assembly.GetManifestResourceNames().FirstOrDefault(x => x.EndsWith(caller + extension));
+            var resourceNames = assembly.GetManifestResourceNames();
+            var resourceName = resourceNames.SingleOrDefault(x => x.EndsWith(expectedEnding));
             if (resourceName is null)
             {
-                throw new InvalidOperationException($"There is no resource that ends with `{caller}`");
+                throw new InvalidOperationException($"There is no resource that ends with `{expectedEnding}`");
             }
 
             using var stream = assembly.GetManifestResourceStream(resourceName);

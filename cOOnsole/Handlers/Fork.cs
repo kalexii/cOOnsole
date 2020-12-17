@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using cOOnsole.Description;
 using cOOnsole.Handlers.Base;
+using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
@@ -21,7 +21,7 @@ namespace cOOnsole.Handlers
         {
             foreach (var reaction in Children)
             {
-                var result = await reaction.HandleAsync(arguments);
+                var result = await reaction.HandleAsync(arguments).ConfigureAwait(false);
                 if (result != HandleResult.NotHandled)
                 {
                     return result;
@@ -33,9 +33,9 @@ namespace cOOnsole.Handlers
 
         public override void PrintSelf(IPrinter printer)
         {
-            foreach (var reaction in Children)
+            foreach (var child in Children)
             {
-                reaction.PrintSelf(printer);
+                child.PrintSelf(printer);
             }
         }
     }

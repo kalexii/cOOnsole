@@ -5,7 +5,7 @@ using cOOnsole.Handlers.Base;
 using FluentAssertions;
 using Moq;
 using Xunit;
-using static cOOnsole.Tests.TestUtilities.ReactionMocks;
+using static cOOnsole.Tests.TestUtilities.HandlerMocks;
 
 namespace cOOnsole.Tests.Handlers
 {

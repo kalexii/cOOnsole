@@ -23,14 +23,14 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
 
         public IParserState ParseToken(string token)
         {
-            if (_context.FindArgumentByToken(token) is null)
+            if (_context.FindArgumentByToken(token) is not null)
             {
-                Captured.Add(token);
-                return this;
+                Flush();
+                return new ExpectingArgumentNameState(_context).ParseToken(token);
             }
 
-            Flush();
-            return new ExpectingArgumentNameState(_context);
+            Captured.Add(token);
+            return this;
         }
 
         public void Flush()

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
-using cOOnsole.Description;
 using cOOnsole.Handlers.Base;
+using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
@@ -28,7 +28,7 @@ namespace cOOnsole.Handlers
 
         public override async Task<HandleResult> HandleAsync(string[] arguments)
         {
-            var result = await Child.HandleAsync(arguments);
+            var result = await Child.HandleAsync(arguments).ConfigureAwait(false);
             if (result == HandleResult.NotHandled)
             {
                 PrintSelf(Context.Printer);

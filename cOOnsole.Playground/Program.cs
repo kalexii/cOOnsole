@@ -49,14 +49,14 @@ namespace cOOnsole.Playground
             public int[]? OptionalIntArrayParam { get; set; } = default!;
         }
 
-        public static Task Main(string[] args) => new Cli(
-            PrintUsage(
+        public static Task<int> Main(string[] args) => new Cli(
+            PrintUsageIfUnmatched(
                 Fork(
-                    Token("command1", Action("my action description 1", (_, _) => { })),
-                    Token("command2", Action("my action description 2", (_, _) => { })),
-                    Token("command3", Action<Params>("my typed action description", (a, _) => PrintIndented(a))),
+                    Token("command1", Action((_, _) => { })),
+                    Token("command2", Action((_, _) => { })),
+                    Token("command3", Action<Params>((a, _) => PrintIndented(a))),
                     Token("help", Unconditional(HandleResult.NotHandled)))
-            )).HandleAsync(args);
+            )).HandleAndGetExitCode(args);
 
         private static void PrintIndented(Params a)
             => Console.WriteLine(JsonSerializer.Serialize(a, new JsonSerializerOptions {WriteIndented = true}));

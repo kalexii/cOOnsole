@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace cOOnsole.Description
+namespace cOOnsole.Printing
 {
     public interface IWritableOutput
     {

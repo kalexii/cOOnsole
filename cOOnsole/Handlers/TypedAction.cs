@@ -2,20 +2,19 @@ using System;
 using System.Threading.Tasks;
 using cOOnsole.ArgumentParsing;
 using cOOnsole.ArgumentParsing.StateMachineParsing;
-using cOOnsole.Description;
 using cOOnsole.Handlers.Base;
+using cOOnsole.Printing;
+using cOOnsole.Utilities;
 
 namespace cOOnsole.Handlers
 {
-    public class ArgumentAction<T> : Handler where T : new()
+    public class TypedAction<T> : Handler where T : new()
     {
-        private readonly string _description;
         private readonly Action<T, HandlerContext> _action;
         private readonly ArgumentParser<T> _parser;
 
-        public ArgumentAction(string description, Action<T, HandlerContext> action)
+        public TypedAction(Action<T, HandlerContext> action)
         {
-            _description = description;
             _action = action;
             _parser = new ArgumentParser<T>();
         }
@@ -23,14 +22,13 @@ namespace cOOnsole.Handlers
         public override Task<HandleResult> HandleAsync(string[] argument)
         {
             var (typedArgument, context) = _parser.Parse(argument);
-            var errors = context.ErrorAttempts;
-            if (errors.Count > 0)
+
+            var printer = Context.Printer;
+            if (context.ErrorAttempts.Count > 0)
             {
-                var printer = Context.Printer;
-                printer.Print("Error!").NewLine().Indent();
-                foreach (var (_, key, value, errorKind) in errors)
+                foreach (var (arg, key, value, errorKind) in context.ErrorAttempts)
                 {
-                    const string? usage = "please, refer to the usage again";
+                    const string usage = "please, refer to the usage again";
                     var message = errorKind switch
                     {
                         ParsingErrorKind.OptionNotRecognized
@@ -38,14 +36,13 @@ namespace cOOnsole.Handlers
                         ParsingErrorKind.ValueIsMissing
                             => "value is not provided for option",
                         ParsingErrorKind.ValueCouldNotBeParsedToType
-                            => $"value \"{value.ToString()}\" could not be converted to the parameter type. {usage}",
+                            => $"value \"{value.ToString()}\" could not be converted to the [{arg!.Property.ToPrettyTypeName()}] type. {usage}",
                         var _ => throw new ArgumentOutOfRangeException(),
                     };
 
-                    printer.Print($"{key}: {message}").NewLine();
+                    printer.Print($"{key}: {message}").NewLine().NewLine();
+                    PrintSelf(printer);
                 }
-
-                printer.NewLine();
 
                 return Task.FromResult(HandleResult.Error);
             }
@@ -53,15 +50,13 @@ namespace cOOnsole.Handlers
             var missingRequireds = context.NotPopulatedRequired;
             if (missingRequireds.Count > 0)
             {
-                var printer = Context.Printer;
-                printer.Print("Error!").NewLine().Indent();
                 foreach (var missingRequired in missingRequireds)
                 {
                     printer.Print($"Missing required argument: {missingRequired.Argument.LongName}").NewLine();
                 }
 
                 printer.NewLine();
-
+                PrintSelf(Context.Printer);
                 return Task.FromResult(HandleResult.Error);
             }
 
@@ -69,12 +64,6 @@ namespace cOOnsole.Handlers
             return Task.FromResult(HandleResult.Handled);
         }
 
-        public override void PrintSelf(IPrinter printer)
-        {
-            printer.Print(_description).NewLine();
-            printer.Indent();
-            _parser.PrintSelf(printer);
-            printer.Unindent();
-        }
+        public override void PrintSelf(IPrinter printer) => _parser.PrintSelf(printer);
     }
 }

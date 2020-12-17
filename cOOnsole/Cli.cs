@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using cOOnsole.Description;
 using cOOnsole.Handlers.Base;
+using cOOnsole.Printing;
 
 namespace cOOnsole
 {
@@ -14,30 +14,37 @@ namespace cOOnsole
         public Cli(IHandler root, IWritableOutput? window = null)
         {
             _root = root;
-            _printer = new Printer(window ?? new ConsoleWindow());
-            _root.SetContext(new HandlerContext(this, _printer));
+            _printer = new Printer(window ?? new ConsoleOutput());
+            _root.SetContext(new HandlerContext(_printer));
         }
 
-        public async Task<bool> HandleAsync(string[] argument)
+        public async Task<int> HandleAndGetExitCode(string[] argument)
         {
             try
             {
-                var result = await _root.HandleAsync(argument);
+                var result = await _root.HandleAsync(argument).ConfigureAwait(false);
+                _printer.Flush();
                 switch (result)
                 {
                     case HandleResult.NotHandled:
+                        return -1;
+
                     case HandleResult.Error:
-                        return false;
+                        return 1;
 
                     default:
-                        return true;
+                        return 0;
                 }
             }
             catch (Exception e)
             {
                 _printer.ResetIndent().Print(e.ToStringDemystified());
-                return false;
+                _printer.Flush();
+                return 1;
             }
         }
+
+        public Task<bool> HandleAsync(string[] argument)
+            => HandleAndGetExitCode(argument).ContinueWith(x => x.Result == 0);
     }
 }

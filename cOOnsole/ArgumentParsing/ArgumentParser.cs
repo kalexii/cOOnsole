@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using cOOnsole.ArgumentParsing.StateMachineParsing;
-using cOOnsole.Description;
+using cOOnsole.Printing;
 using cOOnsole.Utilities;
 
 namespace cOOnsole.ArgumentParsing
@@ -53,30 +53,39 @@ namespace cOOnsole.ArgumentParsing
             };
 
             static void PrintPart(IPrinter printer, ParameterParts parts, IReadOnlyList<int> requiredMaxLengths) =>
-                printer.Print(new StringBuilder()
-                   .Append(parts.Name.PadLeft(requiredMaxLengths[0]))
-                   .Append(" : ")
-                   .Append(parts.Type.PadRight(requiredMaxLengths[1]))
-                   .Append(" # ")
-                   .Append(parts.Description.PadRight(requiredMaxLengths[2])).ToString()).NewLine();
+                printer.Print(
+                    new StringBuilder()
+                       .Append(parts.Name.PadLeft(requiredMaxLengths[0]))
+                       .Append(" : ")
+                       .Append(parts.Type.PadRight(requiredMaxLengths[1]))
+                       .Append(" # ")
+                       .Append(parts.Description)
+                       .ToString()
+                ).NewLine();
 
             var requiredParts = required.ConvertAll(ToParts);
-            printer.Print("required arguments:").NewLine().Indent();
-            foreach (var parts in requiredParts)
+            if (requiredParts.Count > 0)
             {
-                PrintPart(printer, parts, MaxLengths(requiredParts));
+                printer.Print("required arguments:").NewLine().Indent();
+                foreach (var parts in requiredParts)
+                {
+                    PrintPart(printer, parts, MaxLengths(requiredParts));
+                }
+
+                printer.NewLine().Unindent();
             }
 
-            printer.NewLine().Unindent();
-
-            printer.Print("optional arguments:").NewLine().Indent();
             var notRequiredParts = notRequired.ConvertAll(ToParts);
-            foreach (var parts in notRequiredParts)
+            if (notRequiredParts.Count > 0)
             {
-                PrintPart(printer, parts, MaxLengths(notRequiredParts));
-            }
+                printer.Print("optional arguments:").NewLine().Indent();
+                foreach (var parts in notRequiredParts)
+                {
+                    PrintPart(printer, parts, MaxLengths(notRequiredParts));
+                }
 
-            printer.NewLine().Unindent();
+                printer.NewLine().Unindent();
+            }
         }
     }
 }

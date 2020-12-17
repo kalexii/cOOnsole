@@ -4,18 +4,9 @@ using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
-    public class Fork : Handler
+    public class Fork : MultipleChildHandler
     {
         public Fork(params IHandler[] children) => Children = children;
-
-        public override void SetContext(HandlerContext context)
-        {
-            base.SetContext(context);
-            foreach (var handler in Children)
-            {
-                handler.SetContext(context);
-            }
-        }
 
         public override async Task<HandleResult> HandleAsync(string[] arguments)
         {

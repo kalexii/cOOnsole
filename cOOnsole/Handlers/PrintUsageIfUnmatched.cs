@@ -5,7 +5,7 @@ using cOOnsole.Printing;
 
 namespace cOOnsole.Handlers
 {
-    public class PrintUsageIfUnmatched : Handler
+    public class PrintUsageIfUnmatched : SingleChildHandler
     {
         public PrintUsageIfUnmatched(IHandler child) => Child = child;
 

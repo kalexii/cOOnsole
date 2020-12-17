@@ -2,34 +2,42 @@
 
 namespace cOOnsole.Printing
 {
+    /// <summary>
+    /// The default implementation of an <see cref="IPrinter"/>.
+    /// </summary>
+    /// <seealso cref="IPrinter"/>
     public class Printer : IPrinter
     {
         private readonly IWritableOutput _output;
 
         /// <summary>
-        /// Current indentation level.
-        /// </summary>
-        private int _indent;
-
-        /// <summary>
-        /// Represents whether the last char is a new line character (this means we need to add the padding if indent > 0).
+        /// Represents whether the last char is a new line character (this means we need to add the padding if indent >
+        /// 0).
         /// </summary>
         private bool _atNewLine = true;
 
+        /// <summary>Current indentation level.</summary>
+        private int _indent;
+
+        /// <summary>Initializes an instance of <see cref="Printer" />.</summary>
+        /// <param name="window">Window to write to.</param>
         public Printer(IWritableOutput window) => _output = window;
 
+        /// <inheritdoc />
         public IPrinter Indent()
         {
             _indent++;
             return this;
         }
 
+        /// <inheritdoc />
         public IPrinter Unindent()
         {
             _indent--;
             return this;
         }
 
+        /// <inheritdoc />
         public IPrinter Print(string value)
         {
             if (_atNewLine)
@@ -44,6 +52,7 @@ namespace cOOnsole.Printing
             return this;
         }
 
+        /// <inheritdoc />
         public IPrinter NewLine()
         {
             _output.TextWriter.WriteLine();
@@ -51,12 +60,14 @@ namespace cOOnsole.Printing
             return this;
         }
 
+        /// <inheritdoc />
         public IPrinter Flush()
         {
             _output.TextWriter.Flush();
             return this;
         }
 
+        /// <inheritdoc />
         public IPrinter ResetIndent()
         {
             _indent = 0;

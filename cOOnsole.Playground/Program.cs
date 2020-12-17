@@ -55,7 +55,7 @@ namespace cOOnsole.Playground
                     Token("command1", Action((_, _) => { })),
                     Token("command2", Action((_, _) => { })),
                     Token("command3", Action<Params>((a, _) => PrintIndented(a))),
-                    Token("help", Unconditional(HandleResult.NotHandled)))
+                    Token("help", Unconditional(HandleResult.NotMatched)))
             )).HandleAndGetExitCode(args);
 
         private static void PrintIndented(Params a)

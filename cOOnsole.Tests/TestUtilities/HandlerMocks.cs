@@ -32,8 +32,8 @@ namespace cOOnsole.Tests.TestUtilities
 
         public static Mock<IHandler> AlwaysHandled() => Always(HandleResult.Handled);
 
-        public static Mock<IHandler> AlwaysError() => Always(HandleResult.Error);
+        public static Mock<IHandler> AlwaysError() => Always(HandleResult.HandledWithError);
 
-        public static Mock<IHandler> AlwaysNotHandled() => Always(HandleResult.NotHandled);
+        public static Mock<IHandler> AlwaysNotHandled() => Always(HandleResult.NotMatched);
     }
 }

@@ -8,11 +8,11 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
 {
     internal sealed class ParserContext
     {
-        private readonly Dictionary<Type, IStringToTypeConverter> _converters = new();
         private readonly Dictionary<string, ArgumentProp> _arguments = new();
-        private readonly HashSet<ArgumentProp> _required = new();
+        private readonly Dictionary<Type, IStringToTypeConverter> _converters = new();
         private readonly HashSet<ArgumentProp> _notPopulatedRequired = new();
         private readonly List<ParseAttempt> _parseAttempts = new();
+        private readonly HashSet<ArgumentProp> _required = new();
 
         public ParserContext(object target, IReadOnlyList<ArgumentProp> props)
         {
@@ -20,11 +20,9 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             for (var i = 0; i < props.Count; i++)
             {
                 var pair = props[i];
-                _arguments[pair.Argument.LongName] = pair;
-
-                if (pair.Argument.ShortName is { } sn)
+                foreach (var alias in pair.Argument.Aliases)
                 {
-                    _arguments[sn] = pair;
+                    _arguments[alias] = pair;
                 }
 
                 if (pair.IsRequired && pair.Property.PropertyType.GetUnderlyingNullableOrThis() != typeof(bool))
@@ -35,6 +33,12 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
             }
         }
 
+        public ISet<ArgumentProp> NotPopulatedRequired => _notPopulatedRequired;
+
+        public object Target { get; }
+
+        public IReadOnlyList<ParseAttempt> ErrorAttempts => _parseAttempts.Where(x => x.ErrorKind is not null).ToList();
+
         public void SaveAttempt(ParseAttempt attempt)
         {
             _parseAttempts.Add(attempt);
@@ -43,12 +47,6 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
                 _notPopulatedRequired.Remove(attempt.Argument);
             }
         }
-
-        public ISet<ArgumentProp> NotPopulatedRequired => _notPopulatedRequired;
-
-        public object Target { get; }
-
-        public IReadOnlyList<ParseAttempt> ErrorAttempts => _parseAttempts.Where(x => x.ErrorKind is not null).ToList();
 
         public ArgumentProp? FindArgumentByToken(string token)
             => _arguments.TryGetValue(token, out var prop) ? prop : default;

@@ -43,8 +43,8 @@ namespace cOOnsole.Tests.CliTests
         }
 
         [Theory]
-        [InlineData(HandleResult.Error)]
-        [InlineData(HandleResult.NotHandled)]
+        [InlineData(HandleResult.HandledWithError)]
+        [InlineData(HandleResult.NotMatched)]
         public async Task NotSuccessConvertsToFalse(HandleResult stubbedResult)
         {
             var tree = Unconditional(stubbedResult);

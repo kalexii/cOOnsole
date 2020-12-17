@@ -26,7 +26,9 @@ namespace cOOnsole.Tests.CliTests
         public async Task StaysSilentIfHandled()
         {
             var tree = Unconditional(HandleResult.Handled);
+
             var (handled, printed) = await Token("a1", tree).ExecuteAndCaptureAsync("a1");
+
             handled.Should().BeTrue();
             printed.Should().Be(string.Empty);
         }
@@ -48,7 +50,9 @@ namespace cOOnsole.Tests.CliTests
         public async Task NotSuccessConvertsToFalse(HandleResult stubbedResult)
         {
             var tree = Unconditional(stubbedResult);
+
             var result = await new Cli(tree).HandleAsync(Array.Empty<string>());
+
             result.Should().Be(false);
         }
     }

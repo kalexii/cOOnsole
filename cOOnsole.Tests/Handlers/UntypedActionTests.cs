@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
-using cOOnsole.Printing;
 using cOOnsole.Tests.TestUtilities;
 using FluentAssertions;
 using Moq;
@@ -11,22 +11,45 @@ namespace cOOnsole.Tests.Handlers
 {
     public class UntypedActionTests
     {
-        public sealed record ActionCall(string[] Arguments, IHandlerContext Context);
+        [Fact]
+        public async Task CallsUnderlyingAction()
+        {
+            var called = false;
+            var action = new UntypedAction((_, _) => called = true);
+
+            await action.HandleAsync(Array.Empty<string>());
+
+            called.Should().BeTrue();
+        }
 
         [Fact]
-        public async Task ComprehensiveTest() // todo: split into more granular tests
+        public async Task ProvidesArguments()
         {
-            var expected = new ActionCall(new[] {"arg"}, new HandlerContext(new Mock<IPrinter>().Object));
-            ActionCall? actual = null;
-            var action = new UntypedAction((a, c) => actual = new ActionCall(a, c));
-            action.SetContext(expected.Context);
+            var context = Mock.Of<IHandlerContext>();
+            var action = new UntypedAction((a, _) => a.Should().BeEquivalentTo("a", "b"));
+            action.SetContext(context);
 
-            var handled = await action.HandleAsync(expected.Arguments);
+            await action.HandleAsync(new[] {"a", "b"});
+        }
 
-            handled.Should().Be(HandleResult.Handled);
-            actual.Should().NotBeNull();
-            actual!.Arguments.Should().BeSameAs(expected.Arguments);
-            actual!.Context.Should().BeSameAs(expected.Context);
+        [Fact]
+        public async Task ProvidesContext()
+        {
+            var context = Mock.Of<IHandlerContext>();
+            var action = new UntypedAction((_, c) => c.Should().Be(context));
+            action.SetContext(context);
+
+            await action.HandleAsync(Array.Empty<string>());
+        }
+
+        [Fact]
+        public async Task ReturnsHandled()
+        {
+            var action = new UntypedAction((_, _) => { });
+
+            var result = await action.HandleAsync(Array.Empty<string>());
+
+            result.Should().Be(HandleResult.Handled);
         }
 
         [Fact]
@@ -37,7 +60,7 @@ namespace cOOnsole.Tests.Handlers
 
             action.PrintSelf(printer);
 
-            sb.ToString().Should().Be("");
+            sb.ToString().Should().Be(string.Empty);
         }
     }
 }

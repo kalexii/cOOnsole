@@ -29,8 +29,9 @@ namespace cOOnsole.Tests.Handlers
             var tracker = AlwaysHandled();
             var token = new Token("token", tracker.Object);
 
-            await token.HandleAsync(new[] {"token"});
+            var actual = await token.HandleAsync(new[] {"token"});
 
+            actual.Should().BeEquivalentTo(HandleResult.Handled);
             tracker.Verify(x => x.HandleAsync(Array.Empty<string>()), Times.Once());
         }
     }

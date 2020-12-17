@@ -41,6 +41,7 @@
         <EmbeddedResource Include="Handlers\Cases\TypedActionTests.PrintsOutUnknownOptionError.txt" />
         <EmbeddedResource Include="Handlers\Cases\TypedActionTests.PrintsOutMissingValueError.txt" />
         <EmbeddedResource Include="Handlers\Cases\TypedActionTests.PrintsOutUnconvertibleValueError.txt" />
+        <EmbeddedResource Include="Handlers\Cases\DescriptionTest.PrintsDescription.txt" />
     </ItemGroup>
 
     <ItemGroup>

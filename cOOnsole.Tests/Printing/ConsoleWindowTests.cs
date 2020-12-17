@@ -8,6 +8,7 @@ namespace cOOnsole.Tests.Printing
     public class ConsoleWindowTests
     {
         [Fact]
-        public void ConsoleWindowShouldReturnConsoleOut() => new ConsoleOutput().TextWriter.Should().Be(Console.Out);
+        public void ConsoleWindowShouldReturnConsoleOut()
+            => new ConsoleOutput().TextWriter.Should().Be(Console.Out);
     }
 }

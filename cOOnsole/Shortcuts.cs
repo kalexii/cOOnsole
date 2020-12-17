@@ -8,11 +8,6 @@ namespace cOOnsole
     public static class Shortcuts
     {
         /// <inheritdoc cref="Handlers.Token" />
-        /// <param name="token">
-        /// <inheritdoc cref="Handlers.Token._token" />
-        /// </param>
-        /// <param name="child"></param>
-        /// <returns></returns>
         public static Token Token(string token, IHandler child)
             => new(token, child);
 

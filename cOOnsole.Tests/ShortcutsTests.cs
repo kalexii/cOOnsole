@@ -2,6 +2,7 @@
 using cOOnsole.Handlers.Base;
 using FluentAssertions;
 using Xunit;
+using static cOOnsole.Shortcuts;
 
 namespace cOOnsole.Tests
 {
@@ -10,33 +11,25 @@ namespace cOOnsole.Tests
         private readonly Unconditional _dummy = new(HandleResult.Handled);
 
         [Fact]
-        public void Token() => Shortcuts.Token("token", _dummy)
-           .Should().BeOfType<Token>();
+        public void TokenTest() => Token("token", _dummy).Should().BeOfType<Token>();
 
         [Fact]
-        public void Description() => Shortcuts.Description("description", _dummy)
-           .Should().BeOfType<Description>();
+        public void DescriptionTest() => Description("description", _dummy).Should().BeOfType<Description>();
 
         [Fact]
-        public void Fork() => Shortcuts.Fork()
-           .Should().BeOfType<Fork>();
+        public void ForkTest() => Fork().Should().BeOfType<Fork>();
 
         [Fact]
-        public void PrintUsageIfUnmatched() => Shortcuts
-           .PrintUsageIfUnmatched(new Unconditional(HandleResult.NotMatched))
+        public void PrintUsageIfUnmatchedTest() => PrintUsageIfUnmatched(new Unconditional(HandleResult.NotMatched))
            .Should().BeOfType<PrintUsageIfUnmatched>();
 
         [Fact]
-        public void Unconditional() => Shortcuts
-           .Unconditional(HandleResult.NotMatched)
-           .Should().BeOfType<Unconditional>();
+        public void UnconditionalTest() => Unconditional(HandleResult.NotMatched).Should().BeOfType<Unconditional>();
 
         [Fact]
-        public void Action() => Shortcuts.Action((_, _) => { })
-           .Should().BeOfType<UntypedAction>();
+        public void ActionTest() => Action(null!).Should().BeOfType<UntypedAction>();
 
         [Fact]
-        public void ActionOfT() => Shortcuts.Action<object>((_, _) => { })
-           .Should().BeOfType<TypedAction<object>>();
+        public void ActionOfTTest() => Action<object>(null!).Should().BeOfType<TypedAction<object>>();
     }
 }

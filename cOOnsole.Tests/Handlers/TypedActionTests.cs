@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using cOOnsole.ArgumentParsing;
 using cOOnsole.Handlers;
+using cOOnsole.Handlers.Base;
 using cOOnsole.Tests.TestUtilities;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -57,7 +58,7 @@ namespace cOOnsole.Tests.Handlers
         public void PrintsItselfCorrectly()
         {
             var (printer, sb) = HandlerMocks.MockPrinter();
-            var action = new TypedAction<ComplexArg>((_, _) => { });
+            var action = new TypedAction<ComplexArg>(Action);
 
             action.PrintSelf(printer);
 
@@ -67,7 +68,7 @@ namespace cOOnsole.Tests.Handlers
         [Fact]
         public async Task PrintsOutMissedRequiredsIfOnlyOptionalsAreGiven()
         {
-            var action = new TypedAction<ComplexArg>((_, _) => { });
+            var action = new TypedAction<ComplexArg>(Action);
             var expectation = AsExpectedForThisTest();
 
             var (handled, printed) = await action.ExecuteAndCaptureAsync("--obool");
@@ -79,7 +80,7 @@ namespace cOOnsole.Tests.Handlers
         [Fact]
         public async Task PrintsOutMissedRequiredsIfNotAllRequiredsGiven()
         {
-            var action = new TypedAction<ComplexArg>((_, _) => { });
+            var action = new TypedAction<ComplexArg>(Action);
             var expectation = AsExpectedForThisTest();
 
             var (handled, printed) = await action.ExecuteAndCaptureAsync("--int", "123");
@@ -91,7 +92,7 @@ namespace cOOnsole.Tests.Handlers
         [Fact]
         public async Task PrintsOutUnknownOptionError()
         {
-            var action = new TypedAction<ComplexArg>((_, _) => { });
+            var action = new TypedAction<ComplexArg>(Action);
             var expectation = AsExpectedForThisTest();
 
             var (handled, printed) = await action.ExecuteAndCaptureAsync("--unknown");
@@ -103,7 +104,7 @@ namespace cOOnsole.Tests.Handlers
         [Fact]
         public async Task PrintsOutMissingValueError()
         {
-            var action = new TypedAction<ComplexArg>((_, _) => { });
+            var action = new TypedAction<ComplexArg>(Action);
             var expectation = AsExpectedForThisTest();
 
             var (handled, printed) = await action.ExecuteAndCaptureAsync("--int" /*, "1" - missing*/);
@@ -115,7 +116,7 @@ namespace cOOnsole.Tests.Handlers
         [Fact]
         public async Task PrintsOutUnconvertibleValueError()
         {
-            var action = new TypedAction<ComplexArg>((_, _) => { });
+            var action = new TypedAction<ComplexArg>(Action);
             var expectation = AsExpectedForThisTest();
 
             var (handled, printed) = await action.ExecuteAndCaptureAsync("--int", "hello");
@@ -141,10 +142,7 @@ namespace cOOnsole.Tests.Handlers
                 OptionalIntArrayParam = new[] {-2, 2},
             };
 
-            var argumentParser =
-                new PrintUsageIfUnmatched(
-                    new Token("arg",
-                        new TypedAction<ComplexArg>((a, c) => { c.Printer.Print(JsonConvert.SerializeObject(a)); })));
+            var argumentParser = new PrintUsageIfUnmatched(new Token("arg", new TypedAction<ComplexArg>(Action)));
             var (handled, printed) = await argumentParser.ExecuteAndCaptureAsync("arg",
                 "-b", "-s", "hello", "-i", "123", "-e", "first", "-ia", "-1", "0", "1",
                 "--obool", "--ostr", "world", "--oint", "234", "--oenum", "second", "--ointArray", "-2", "2");
@@ -152,5 +150,7 @@ namespace cOOnsole.Tests.Handlers
             var actual = JsonConvert.DeserializeObject<ComplexArg>(printed);
             actual.Should().BeEquivalentTo(expected);
         }
+
+        private static void Action(ComplexArg a, IHandlerContext c) => c.Printer.Print(JsonConvert.SerializeObject(a));
     }
 }

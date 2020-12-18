@@ -1,6 +1,7 @@
 ﻿Missing required argument: --str | -s
 Missing required argument: --enum | -e
 Missing required argument: --intArray | -ia
+Missing required argument: --intList | -il
 
 required arguments:
        --bool | -b : Boolean                # This is my required bool parameter
@@ -8,6 +9,7 @@ required arguments:
         --int | -i : Int32                  # This is my required int parameter
        --enum | -e : First | Second | Third # This is my required enum parameter
   --intArray | -ia : Int32[]                # This is my required int array parameter
+   --intList | -il : List<Int32>            # This is my required int list parameter
 
 optional arguments:
              --obool : Boolean?                  # This is my optional bool parameter
@@ -15,4 +17,5 @@ optional arguments:
               --oint : Int32?                    # This is my optional int parameter
              --oenum : (First | Second | Third)? # This is my optional enum parameter
   --ointArray | -oia : Int32[]?                  # This is my int array parameter
+   --ointList | -oil : List<Int32>?              # This is my required int list parameter
 

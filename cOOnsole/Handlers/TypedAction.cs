@@ -9,7 +9,7 @@ using cOOnsole.Utilities;
 namespace cOOnsole.Handlers
 {
     /// <summary>
-    /// Tries to parse an array of string command line parameters into an object of type <see cref="T"/>.
+    /// Tries to parse an array of string command line parameters into an object of type T.
     /// In case of successful parsing, calls the wrapped action providing the parsed object.
     /// </summary>
     /// <typeparam name="T">Argument class to parse properties for.</typeparam>

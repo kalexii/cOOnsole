@@ -10,14 +10,12 @@ namespace cOOnsole.Utilities
     {
         internal static string ToPrettyTypeName(this PropertyInfo propertyInfo)
         {
-            static string ToPrettyNameWithoutNullable(Type t, bool wrapInBraces) => t switch
+            static string ToPrettyNameWithoutNullable(Type t) => t switch
             {
                 {IsGenericType: true} =>
-                    $"{t.Name.Substring(0, t.Name.Length - 2)}<{string.Join(", ", t.GetGenericArguments().Select(x => ToPrettyNameWithoutNullable(x, x.IsEnum)))}>",
-                {IsEnum: true} => wrapInBraces
-                    ? $"({string.Join(" | ", Enum.GetNames(t))})"
-                    : string.Join(" | ", Enum.GetNames(t)),
-                var _ => t.Name,
+                    $"{t.Name.Substring(0, t.Name.Length - 2)}<{string.Join(", ", t.GetGenericArguments().Select(ToPrettyNameWithoutNullable))}>",
+                {IsEnum: true} => $"({string.Join(" | ", Enum.GetNames(t))})",
+                var _          => t.Name,
             };
 
             var sb = new StringBuilder();
@@ -25,18 +23,18 @@ namespace cOOnsole.Utilities
             {
                 if (Nullable.GetUnderlyingType(propertyInfo.PropertyType) is { } underlying)
                 {
-                    sb.Append(ToPrettyNameWithoutNullable(underlying, true));
+                    sb.Append(ToPrettyNameWithoutNullable(underlying));
                 }
                 else
                 {
-                    sb.Append(ToPrettyNameWithoutNullable(propertyInfo.PropertyType, true));
+                    sb.Append(ToPrettyNameWithoutNullable(propertyInfo.PropertyType));
                 }
 
                 sb.Append("?");
             }
             else
             {
-                sb.Append(ToPrettyNameWithoutNullable(propertyInfo.PropertyType, false));
+                sb.Append(ToPrettyNameWithoutNullable(propertyInfo.PropertyType));
             }
 
             return sb.ToString();

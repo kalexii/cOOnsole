@@ -1,10 +1,10 @@
 ﻿required arguments:
-       --bool | -b : Boolean                # This is my required bool parameter
-        --str | -s : String                 # This is my required string parameter
-        --int | -i : Int32                  # This is my required int parameter
-       --enum | -e : First | Second | Third # This is my required enum parameter
-  --intArray | -ia : Int32[]                # This is my required int array parameter
-   --intList | -il : List<Int32>            # This is my required int list parameter
+       --bool | -b : Boolean                  # This is my required bool parameter
+        --str | -s : String                   # This is my required string parameter
+        --int | -i : Int32                    # This is my required int parameter
+       --enum | -e : (First | Second | Third) # This is my required enum parameter
+  --intArray | -ia : Int32[]                  # This is my required int array parameter
+   --intList | -il : List<Int32>              # This is my required int list parameter
 
 optional arguments:
              --obool : Boolean?                  # This is my optional bool parameter

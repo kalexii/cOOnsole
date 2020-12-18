@@ -11,8 +11,8 @@ namespace cOOnsole.Printing
         private readonly IWritableOutput _output;
 
         /// <summary>
-        /// Represents whether the last char is a new line character (this means we need to add the padding if indent >
-        /// 0).
+        /// Represents whether the last char is a new line character
+        /// (this means we need to add the padding if indent > 0).
         /// </summary>
         private bool _atNewLine = true;
 
@@ -23,19 +23,20 @@ namespace cOOnsole.Printing
         /// <param name="window">Window to write to.</param>
         public Printer(IWritableOutput window) => _output = window;
 
-        /// <inheritdoc />
-        public IPrinter Indent()
+        IPrinter IPrinter.IncreaseIndentationLevel()
         {
             _indent++;
             return this;
         }
 
-        /// <inheritdoc />
-        public IPrinter Unindent()
+        IPrinter IPrinter.DecreaseIndentationLevel()
         {
             _indent--;
             return this;
         }
+
+        /// <inheritdoc />
+        public IDisposable Indent(int levels) => new Indent(this, levels);
 
         /// <inheritdoc />
         public IPrinter Print(string value)

@@ -6,7 +6,7 @@ namespace cOOnsole.Handlers
 {
     /// <summary>
     /// This handler has it's uses when you want to manipulate the <see cref="HandleResult"/> returned by handlers.
-    /// Most useful when creating a <c>help</c> command when there's a <see cref="PrintUsageIfUnmatched"/> is in the root of the tree.
+    /// Most useful when creating a <c>help</c> command when there's a <see cref="PrintUsageIfNotMatched"/> is in the root of the tree.
     /// </summary>
     public class Unconditional : Handler
     {

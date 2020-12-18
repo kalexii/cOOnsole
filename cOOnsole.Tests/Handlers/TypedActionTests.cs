@@ -152,11 +152,12 @@ namespace cOOnsole.Tests.Handlers
                 OptionalIntListParam = new List<int> {-11, 0, 11},
             };
 
-            var argumentParser = new PrintUsageIfUnmatched(new Token("arg", new TypedAction<ComplexArg>(Action)));
+            var argumentParser = new PrintUsageIfNotMatched(new Token("arg", new TypedAction<ComplexArg>(Action)));
             var (handled, printed) = await argumentParser.ExecuteAndCaptureAsync("arg",
                 "-b", "-s", "hello", "-i", "123", "-e", "first", "-ia", "-1", "0", "1", "-il", "-9", "0", "9",
                 "--obool", "--ostr", "world", "--oint", "234", "--oenum", "second", "-oia", "-2", "2", "-oil", "-11",
                 "0", "11");
+
             handled.Should().BeTrue();
             var actual = JsonConvert.DeserializeObject<ComplexArg>(printed);
             actual.Should().BeEquivalentTo(expected);
@@ -180,6 +181,7 @@ namespace cOOnsole.Tests.Handlers
             var typedAction = new TypedAction<DuplicateAliasArg>(Action);
 
             var (handled, printed) = await typedAction.ExecuteAndCaptureAsync();
+
             handled.Should().BeFalse();
             printed.Split(Environment.NewLine)[0]
                .Should().Be(

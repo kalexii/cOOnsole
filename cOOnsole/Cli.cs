@@ -44,9 +44,9 @@ namespace cOOnsole
                 _printer.Flush();
                 return result switch
                 {
-                    HandleResult.NotMatched => -1,
-                    HandleResult.HandledWithError      => 1,
-                    var _                   => 0,
+                    HandleResult.NotMatched       => -1,
+                    HandleResult.HandledWithError => 1,
+                    var _                         => 0,
                 };
             }
             catch (Exception e)

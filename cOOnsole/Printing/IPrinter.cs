@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace cOOnsole.Printing
@@ -7,11 +8,11 @@ namespace cOOnsole.Printing
     /// </summary>
     public interface IPrinter
     {
-        /// <summary>Increases the indentation level.</summary>
-        IPrinter Indent();
+        internal IPrinter IncreaseIndentationLevel();
+        internal IPrinter DecreaseIndentationLevel();
 
-        /// <summary>Decreases the indentation level.</summary>
-        IPrinter Unindent();
+        /// <summary>Increases the indentation level, and decreases it when <see cref="IDisposable"/> is returned.</summary>
+        IDisposable Indent(int levels = 1);
 
         /// <summary>
         /// Prints a string on the current line.

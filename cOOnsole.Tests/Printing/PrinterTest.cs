@@ -15,7 +15,7 @@ namespace cOOnsole.Tests.Printing
             var expectation = AsExpectedForThisTest();
             var noop = Description("noop", Unconditional(HandleResult.Handled));
             var handler =
-                PrintUsageIfUnmatched(
+                PrintUsageIfNotMatched(
                     Fork(
                         Token("token a", noop),
                         Token("token b, longer", noop)));
@@ -32,7 +32,7 @@ namespace cOOnsole.Tests.Printing
             var expectation = AsExpectedForThisTest();
             var noop = Description("noop", Unconditional(HandleResult.Handled));
             var handler =
-                PrintUsageIfUnmatched(
+                PrintUsageIfNotMatched(
                     Fork(
                         Fork(
                             Token("root-fork-token1", noop),

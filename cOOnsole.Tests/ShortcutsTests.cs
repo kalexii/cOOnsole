@@ -20,8 +20,8 @@ namespace cOOnsole.Tests
         public void ForkTest() => Fork().Should().BeOfType<Fork>();
 
         [Fact]
-        public void PrintUsageIfUnmatchedTest() => PrintUsageIfUnmatched(new Unconditional(HandleResult.NotMatched))
-           .Should().BeOfType<PrintUsageIfUnmatched>();
+        public void PrintUsageIfUnmatchedTest() => PrintUsageIfNotMatched(new Unconditional(HandleResult.NotMatched))
+           .Should().BeOfType<PrintUsageIfNotMatched>();
 
         [Fact]
         public void UnconditionalTest() => Unconditional(HandleResult.NotMatched).Should().BeOfType<Unconditional>();

@@ -9,10 +9,10 @@ namespace cOOnsole.Handlers
     /// This node prints the usage for the application enhancing it with the assembly name and version in case the child handler did not match.
     /// This is most useful at the root of the handler tree. 
     /// </summary>
-    public class PrintUsageIfUnmatched : SingleChildHandler
+    public class PrintUsageIfNotMatched : SingleChildHandler
     {
-        /// <summary>Initializes an instance of <see cref="PrintUsageIfUnmatched" />.</summary>
-        public PrintUsageIfUnmatched(IHandler wrapped) : base(wrapped)
+        /// <summary>Initializes an instance of <see cref="PrintUsageIfNotMatched" />.</summary>
+        public PrintUsageIfNotMatched(IHandler wrapped) : base(wrapped)
         {
         }
 
@@ -24,14 +24,16 @@ namespace cOOnsole.Handlers
               ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
               ?.InformationalVersion;
 
-            printer
+            using (printer
                .Print($"{assembly!.GetName().Name} v{version}")
                .NewLine()
                .Print("Usage:")
                .NewLine()
                .NewLine()
-               .Indent();
-            Wrapped.PrintSelf(printer);
+               .Indent())
+            {
+                Wrapped.PrintSelf(printer);
+            }
         }
 
         /// <inheritdoc />

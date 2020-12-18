@@ -9,6 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cOOnsole.Tests", "cOOnsole.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cOOnsole.Playground", "cOOnsole.Playground\cOOnsole.Playground.csproj", "{80AF6A94-5869-4B3F-87B0-F1362EEED1A1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{21F7E77E-A13D-4350-8C33-2AC03DA3A2D5}"
+ProjectSection(SolutionItems) = preProject
+	docs\ComplexExample.md = docs\ComplexExample.md
+	README.md = README.md
+	docs\Handlers.md = docs\Handlers.md
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

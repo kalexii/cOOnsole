@@ -34,9 +34,10 @@ namespace cOOnsole.Handlers
         public override void PrintSelf(IPrinter printer)
         {
             printer.Print(_token).NewLine();
-            printer.Indent();
-            Wrapped.PrintSelf(printer);
-            printer.Unindent().NewLine();
+            using (printer.Indent())
+            {
+                Wrapped.PrintSelf(printer);
+            }
         }
     }
 }

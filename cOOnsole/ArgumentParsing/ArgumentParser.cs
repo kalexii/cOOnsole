@@ -53,46 +53,62 @@ namespace cOOnsole.ArgumentParsing
                 pair.Argument.Description ?? ""
             );
 
-            static int[] MaxLengths(IReadOnlyCollection<ParameterParts> parts) => new[]
+            static int[] MaxLengths(IEnumerable<ParameterParts> parts)
             {
-                parts.Select(x => x.Name).Max(x => x.Length),
-                parts.Select(x => x.Type).Max(x => x.Length),
-                parts.Select(x => x.Description).Max(x => x.Length),
-            };
+                var result = new int[3];
+                foreach (var (name, type, description) in parts)
+                {
+                    result[0] = Math.Max(result[0], name.Length);
+                    result[1] = Math.Max(result[1], type.Length);
+                    result[2] = Math.Max(result[2], description.Length);
+                }
 
-            static void PrintPart(IPrinter printer, ParameterParts parts, IReadOnlyList<int> requiredMaxLengths) =>
-                printer.Print(
-                    new StringBuilder()
-                       .Append(parts.Name.PadLeft(requiredMaxLengths[0]))
-                       .Append(" : ")
-                       .Append(parts.Type.PadRight(requiredMaxLengths[1]))
-                       .Append(" # ")
-                       .Append(parts.Description)
-                       .ToString()
-                ).NewLine();
+                return result;
+            }
+
+            static void PrintPart(IPrinter printer, ParameterParts parts, IReadOnlyList<int> requiredMaxLengths)
+            {
+                var (name, type, description) = parts;
+                var sb = new StringBuilder()
+                   .Append(name.PadLeft(requiredMaxLengths[0]))
+                   .Append(" : ")
+                   .Append(type.PadRight(requiredMaxLengths[1]));
+                if (description != string.Empty)
+                {
+                    sb.Append(" # ").Append(description);
+                }
+
+                printer.Print(sb.ToString()).NewLine();
+            }
 
             var requiredParts = required.ConvertAll(ToParts);
             if (requiredParts.Count > 0)
             {
-                printer.Print("required arguments:").NewLine().Indent();
-                foreach (var parts in requiredParts)
+                printer.Print("required arguments:").NewLine();
+                using (printer.Indent())
                 {
-                    PrintPart(printer, parts, MaxLengths(requiredParts));
+                    foreach (var parts in requiredParts)
+                    {
+                        PrintPart(printer, parts, MaxLengths(requiredParts));
+                    }
                 }
 
-                printer.NewLine().Unindent();
+                printer.NewLine();
             }
 
             var notRequiredParts = notRequired.ConvertAll(ToParts);
             if (notRequiredParts.Count > 0)
             {
-                printer.Print("optional arguments:").NewLine().Indent();
-                foreach (var parts in notRequiredParts)
+                printer.Print("optional arguments:").NewLine();
+                using (printer.Indent())
                 {
-                    PrintPart(printer, parts, MaxLengths(notRequiredParts));
+                    foreach (var parts in notRequiredParts)
+                    {
+                        PrintPart(printer, parts, MaxLengths(notRequiredParts));
+                    }
                 }
 
-                printer.NewLine().Unindent();
+                printer.NewLine();
             }
         }
 

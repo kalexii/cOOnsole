@@ -1,0 +1,58 @@
+stages:
+  - build
+  - test
+  - gitlab_nuget
+  - myget
+
+build:
+  stage: build  
+  script:
+    - dotnet clean -c Release
+    - dotnet build -c Release
+    - dotnet pack -c Release -o ./publish
+  artifacts:
+    paths:
+      - publish/
+
+test:
+  dependencies:
+    - build
+  before_script:
+   - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools --ignore-failed-sources
+  stage: test
+  script:
+    - dotnet test --collect:"XPlat Code Coverage"
+    - ls -ld ${CI_PROJECT_DIR}/**/TestResults/*
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:TextSummary;
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:Html;
+    - ls Reports_Coverage
+    - cat ./Reports_Coverage/Summary.txt
+    - echo 'End Summary'
+  coverage: /Line coverage[\s\S].+%/
+  artifacts:
+    paths:
+      - Reports_Coverage/
+
+gitlab_nuget:
+  dependencies:
+    - build
+  stage: gitlab_nuget
+  only:
+    - master
+    - main
+  before_script:
+    - dotnet nuget add source "$CI_SERVER_URL/api/v4/projects/$CI_PROJECT_ID/packages/nuget/index.json" --name gitlab --username gitlab-ci-token --password $CI_JOB_TOKEN --store-password-in-clear-text
+  script:
+    - dotnet nuget push ./publish/**.nupkg --source gitlab
+  after_script:
+    - dotnet nuget remove source gitlab
+
+myget:
+  dependencies:
+    - build
+  stage: myget
+  only:
+    - master
+    - main
+  script:
+    - dotnet nuget push ./publish/*.nupkg --api-key $MYGET_API_KEY --source $MYGET_PUSH_URL

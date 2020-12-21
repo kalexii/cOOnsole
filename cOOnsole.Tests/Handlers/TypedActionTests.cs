@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using cOOnsole.ArgumentParsing;
 using cOOnsole.Handlers;
@@ -183,9 +182,8 @@ namespace cOOnsole.Tests.Handlers
             var (handled, printed) = await typedAction.ExecuteAndCaptureAsync();
 
             handled.Should().BeFalse();
-            printed.Split(Environment.NewLine)[0]
-               .Should().Be(
-                    "cOOnsole.ArgumentParsing.Exceptions.DuplicateAliasException: Duplicate alias in class DuplicateAliasArg: --param");
+            printed.TakeFirstLine().Should().Be(
+                "cOOnsole.ArgumentParsing.Exceptions.DuplicateAliasException: Duplicate alias in class DuplicateAliasArg: --param");
         }
     }
 }

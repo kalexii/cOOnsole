@@ -14,11 +14,5 @@ namespace cOOnsole.Handlers.Base
         /// <param name="input">The input to handle.</param>
         /// <returns>The instance of <see cref="HandleResult"/> that denotes how the handling went.</returns>
         Task<HandleResult> HandleAsync(string[] input);
-        
-        /// <summary>
-        /// Method that gets called whenever this instance of <see cref="IPrintable"/> is requested to print itself.
-        /// </summary>
-        /// <param name="printer">The printer to use.</param>
-        void PrintSelf(IPrinter printer);
     }
 }

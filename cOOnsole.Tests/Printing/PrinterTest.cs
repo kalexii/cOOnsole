@@ -23,7 +23,7 @@ namespace cOOnsole.Tests.Printing
             var (handled, printed) = await handler.ExecuteAndCaptureAsync();
 
             handled.Should().BeTrue();
-            printed.Should().Be(expectation);
+            printed.SkipFirstLine().Should().Be(expectation);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace cOOnsole.Tests.Printing
             var (handled, printed) = await handler.ExecuteAndCaptureAsync();
 
             handled.Should().BeTrue();
-            printed.Should().Be(expectation);
+            printed.SkipFirstLine().Should().Be(expectation);
         }
     }
 }

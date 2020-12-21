@@ -9,7 +9,7 @@ namespace cOOnsole.Handlers.Base
         /// <summary>Exposes the handler context to the implementations.</summary>
         protected IHandlerContext Context { get; private set; } = null!;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IPrintable.PrintSelf" />
         public abstract void PrintSelf(IPrinter printer);
 
         /// <inheritdoc />

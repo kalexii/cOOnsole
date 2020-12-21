@@ -41,7 +41,7 @@ namespace cOOnsole.Tests.CliTests
             var (handled, printed) = await new UntypedAction((_, _) => throw new Exception()).ExecuteAndCaptureAsync();
 
             handled.Should().BeFalse();
-            printed.Split(Environment.NewLine)[0].Should().Be(expectation);
+            printed.TakeFirstLine().Should().Be(expectation);
         }
 
         [Theory]

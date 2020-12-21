@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>cOOnsole.Playground</AssemblyName>
         <RootNamespace>cOOnsole.Playground</RootNamespace>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using cOOnsole.Handlers.Base;
 using static cOOnsole.Shortcuts;
 

@@ -1,5 +1,4 @@
-﻿ReSharperTestRunner64 v1.2.7.47
-Usage:
+﻿Usage:
 
   aFork
 

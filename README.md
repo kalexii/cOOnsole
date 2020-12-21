@@ -1,14 +1,13 @@
 # cOOnsole
 
----
+[![pipeline status](https://gitlab.kalexi.me/libraries/coonsole/badges/master/pipeline.svg)](https://gitlab.kalexi.me/libraries/coonsole/-/commits/master)
+[![coverage report](https://gitlab.kalexi.me/libraries/coonsole/badges/master/coverage.svg)](https://gitlab.kalexi.me/libraries/coonsole/-/commits/master)
 
 `cOOnsole` is an object-oriented console application framework. It draws heavy inspiration
 from [React](https://reactjs.org/) and [Takes](https://github.com/yegor256/takes) framework.
 
 Built with flexibility in mind, `cOOnsole` provides some amount of default must-have tools for
 building CLI apps, and allows you to easily define your own.
-
----
 
 ## Getting Started
 

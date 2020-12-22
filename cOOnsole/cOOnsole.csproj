@@ -6,7 +6,7 @@
         <AssemblyName>cOOnsole</AssemblyName>
         <RootNamespace>cOOnsole</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>0.0.1</PackageVersion>
+        <PackageVersion>0.0.2</PackageVersion>
         <Title>cOOnsole</Title>
         <Authors>kalexi</Authors>
         <Description>An object-oriented console application framework.</Description>

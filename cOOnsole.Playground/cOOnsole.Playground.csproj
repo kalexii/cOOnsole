@@ -8,6 +8,7 @@
         <AssemblyName>cOOnsole.Playground</AssemblyName>
         <RootNamespace>cOOnsole.Playground</RootNamespace>
         <IsPackable>false</IsPackable>
+        <Description>Playground just for fun!</Description>
     </PropertyGroup>
 
     <ItemGroup>

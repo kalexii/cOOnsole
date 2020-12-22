@@ -25,12 +25,19 @@ namespace cOOnsole.Handlers
                            ?? AppDomain.CurrentDomain
                               .GetAssemblies()
                               .First(x => !x.FullName.StartsWith("mscorlib") && !x.FullName.StartsWith("System."));
+
             var version = assembly
               ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
               ?.InformationalVersion;
 
+            var description = assembly
+              ?.GetCustomAttribute<AssemblyDescriptionAttribute>()
+              ?.Description is { } d
+                ? $" - {d}"
+                : "";
+
             using (printer
-               .Print($"{assembly!.GetName().Name} v{version}")
+               .Print($"{assembly!.GetName().Name} v{version}{description}")
                .NewLine()
                .Print("Usage:")
                .NewLine()

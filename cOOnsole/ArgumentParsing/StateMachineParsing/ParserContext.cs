@@ -14,7 +14,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
         private readonly List<ParseAttempt> _parseAttempts = new();
         private readonly HashSet<ArgumentProp> _required = new();
 
-        public ParserContext(object target, IReadOnlyList<ArgumentProp> props)
+        public ParserContext(object target, List<ArgumentProp> props)
         {
             Target = target;
             for (var i = 0; i < props.Count; i++)
@@ -37,7 +37,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing
 
         public object Target { get; }
 
-        public IReadOnlyList<ParseAttempt> ErrorAttempts => _parseAttempts.Where(x => x.ErrorKind is not null).ToList();
+        public List<ParseAttempt> ErrorAttempts => _parseAttempts.Where(x => x.ErrorKind is not null).ToList();
 
         public void SaveAttempt(ParseAttempt attempt)
         {

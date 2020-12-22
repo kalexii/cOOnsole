@@ -18,7 +18,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
                 switch (property.PropertyType)
                 {
                     case {IsValueType: true} t when t.GetUnderlyingNullableOrThis() == typeof(bool):
-                        _context.SaveAttempt(new ParseAttempt(prop, token, token));
+                        _context.SaveAttempt(new ParseAttempt(prop, token, new[] {token}));
                         property.SetValue(_context.Target, true);
                         return this;
 
@@ -34,7 +34,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
                 }
             }
 
-            _context.SaveAttempt(new ParseAttempt(null, token, (string?) null, ParsingErrorKind.OptionNotRecognized));
+            _context.SaveAttempt(new ParseAttempt(null, token, new string[0], ParsingErrorKind.OptionNotRecognized));
             return this;
         }
     }

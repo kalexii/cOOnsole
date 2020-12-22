@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
         <AssemblyName>cOOnsole</AssemblyName>
@@ -13,6 +12,7 @@
         <Description>An object-oriented console application framework.</Description>
         <AssemblyVersion>0.0.1</AssemblyVersion>
         <NeutralLanguage>en</NeutralLanguage>
+        <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -28,13 +28,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ben.Demystifier" Version="0.1.6" />
       <PackageReference Include="IsExternalInit" Version="1.0.0">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-      <PackageReference Include="Microsoft.Extensions.Primitives" Version="5.0.0" />
+      <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
 
 </Project>

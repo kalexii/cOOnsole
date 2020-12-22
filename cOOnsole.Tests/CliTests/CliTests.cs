@@ -51,7 +51,7 @@ namespace cOOnsole.Tests.CliTests
         {
             var tree = Unconditional(stubbedResult);
 
-            var result = await new Cli(tree).HandleAsync(Array.Empty<string>());
+            var result = await new Cli(tree).HandleAsync(new string[0]);
 
             result.Should().Be(false);
         }

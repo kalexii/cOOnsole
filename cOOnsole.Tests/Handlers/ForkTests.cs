@@ -1,5 +1,4 @@
-﻿using System;
-using cOOnsole.Handlers;
+﻿using cOOnsole.Handlers;
 using Moq;
 using Xunit;
 using static cOOnsole.Tests.TestUtilities.HandlerMocks;
@@ -16,7 +15,7 @@ namespace cOOnsole.Tests.Handlers
 
             var fork = new Fork(handled.Object, error.Object);
 
-            fork.HandleAsync(Array.Empty<string>());
+            fork.HandleAsync(new string[0]);
 
             handled.Verify(x => x.HandleAsync(It.IsAny<string[]>()), Times.Once());
             error.Verify(x => x.HandleAsync(It.IsAny<string[]>()), Times.Once());
@@ -30,7 +29,7 @@ namespace cOOnsole.Tests.Handlers
 
             var fork = new Fork(handled.Object, error.Object);
 
-            fork.HandleAsync(Array.Empty<string>());
+            fork.HandleAsync(new string[0]);
 
             handled.Verify(x => x.HandleAsync(It.IsAny<string[]>()), Times.Once());
             error.Verify(x => x.HandleAsync(It.IsAny<string[]>()), Times.Never());

@@ -10,9 +10,9 @@ namespace cOOnsole.Tests.TestUtilities
         protected string AsExpectedForThisTest(string extension = ".txt")
         {
             var callerMethod = new StackTrace(1)
-               .GetFrames()
-               .FirstOrDefault(frame => frame?.GetMethod() is {DeclaringType: {Namespace: { } namespacee}} method
-                                        && namespacee.StartsWith(nameof(cOOnsole))
+               .GetFrames()?
+               .FirstOrDefault(frame => frame?.GetMethod() is {DeclaringType: {Namespace: { } ns}} method
+                                        && ns.StartsWith(nameof(cOOnsole))
                                         && method.Name != "MoveNext")? // omit async state machine frames
                .GetMethod();
 
@@ -22,8 +22,7 @@ namespace cOOnsole.Tests.TestUtilities
                                                     "You are probably in the wrong async context.");
             }
 
-            var caller = $"{callerMethod.DeclaringType?.Name}.{callerMethod.Name}";
-            var expectedEnding = caller + extension;
+            var expectedEnding = $"{callerMethod.DeclaringType?.Name}.{callerMethod.Name}{extension}";
             var assembly = GetType().Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
             var resourceName = resourceNames.SingleOrDefault(x => x.EndsWith(expectedEnding));

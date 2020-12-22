@@ -44,7 +44,7 @@ namespace cOOnsole.Handlers
                         ParsingErrorKind.ValueIsMissing
                             => "value is not provided for option",
                         ParsingErrorKind.ValueCouldNotBeParsedToType
-                            => $"value \"{value.ToString()}\" could not be converted to the [{arg!.Property.ToPrettyTypeName()}] type. {usage}",
+                            => $"value \"{string.Join(",", value)}\" could not be converted to the [{arg!.Property.ToPrettyTypeName()}] type. {usage}",
                         var _ => throw new ArgumentOutOfRangeException(),
                     };
 

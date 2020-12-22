@@ -3,6 +3,7 @@ stages:
   - test
   - gitlab_nuget
   - myget
+  - nuget
 
 build:
   stage: build
@@ -55,3 +56,14 @@ myget:
     - main
   script:
     - dotnet nuget push ./publish/*.nupkg --api-key $MYGET_API_KEY --source $MYGET_PUSH_URL
+
+nuget:
+  when: manual
+  dependencies:
+    - build
+  stage: nuget
+  only:
+    - master
+    - main
+  script:
+    - dotnet nuget push ./publish/*.nupkg --api-key $NUGET_API_KEY --source $NUGET_PUSH_URL

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Printing;
@@ -33,10 +34,34 @@ namespace cOOnsole
 
         /// <inheritdoc cref="Handlers.UntypedAction" />
         public static UntypedAction Action(Action<string[], IHandlerContext> action)
+            => new((arg, context) =>
+            {
+                action(arg, context);
+                return Task.FromResult(HandleResult.Handled);
+            });
+
+        /// <inheritdoc cref="Handlers.UntypedAction" />
+        public static UntypedAction Action(Func<string[], IHandlerContext, HandleResult> action)
+            => new((arg, context) => Task.FromResult(action(arg, context)));
+
+        /// <inheritdoc cref="Handlers.UntypedAction" />
+        public static UntypedAction Action(Func<string[], IHandlerContext, Task<HandleResult>> action)
             => new(action);
 
         /// <inheritdoc cref="Handlers.TypedAction{T}" />
         public static TypedAction<T> Action<T>(Action<T, IHandlerContext> action)
+            where T : new() => new((arg, context) =>
+        {
+            action(arg, context);
+            return Task.FromResult(HandleResult.Handled);
+        });
+
+        /// <inheritdoc cref="Handlers.TypedAction{T}" />
+        public static TypedAction<T> Action<T>(Func<T, IHandlerContext, HandleResult> action)
+            where T : new() => new((arg, context) => Task.FromResult(action(arg, context)));
+
+        /// <inheritdoc cref="Handlers.TypedAction{T}" />
+        public static TypedAction<T> Action<T>(Func<T, IHandlerContext, Task<HandleResult>> action)
             where T : new() => new(action);
     }
 }

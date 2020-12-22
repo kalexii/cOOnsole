@@ -2,8 +2,8 @@
 
 [![NuGet](https://img.shields.io/nuget/v/cOOnsole)](https://www.nuget.org/packages/cOOnsole/)
 [![MyGet](https://img.shields.io/myget/kalexii/v/cOOnsole)](https://www.myget.org/feed/kalexii/package/nuget/cOOnsole/)
-[![pipeline status](https://gitlab.kalexi.me/libraries/coonsole/badges/master/pipeline.svg)](https://gitlab.kalexi.me/libraries/coonsole)
-[![coverage report](https://gitlab.kalexi.me/libraries/coonsole/badges/master/coverage.svg)](https://gitlab.kalexi.me/libraries/coonsole)
+[![pipeline status](https://gitlab.kalexi.me/libraries/coonsole/badges/main/pipeline.svg)](https://gitlab.kalexi.me/libraries/coonsole)
+[![coverage report](https://gitlab.kalexi.me/libraries/coonsole/badges/main/coverage.svg)](https://gitlab.kalexi.me/libraries/coonsole)
 
 `cOOnsole` is an object-oriented console application framework. It draws heavy inspiration
 from [React](https://reactjs.org/) and [Takes](https://github.com/yegor256/takes) framework.

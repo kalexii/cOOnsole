@@ -162,7 +162,11 @@ namespace cOOnsole.Tests.Handlers
             actual.Should().BeEquivalentTo(expected);
         }
 
-        private static void Action<T>(T a, IHandlerContext c) => c.Printer.Print(JsonConvert.SerializeObject(a));
+        private static Task<HandleResult> Action<T>(T a, IHandlerContext c)
+        {
+            c.Printer.Print(JsonConvert.SerializeObject(a));
+            return Task.FromResult(HandleResult.Handled);
+        }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         public class DuplicateAliasArg

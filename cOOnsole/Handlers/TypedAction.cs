@@ -15,12 +15,12 @@ namespace cOOnsole.Handlers
     /// <typeparam name="T">Argument class to parse properties for.</typeparam>
     public class TypedAction<T> : Handler where T : new()
     {
-        private readonly Action<T, IHandlerContext> _action;
+        private readonly Func<T, IHandlerContext, Task<HandleResult>> _action;
         private readonly ArgumentParser<T> _parser;
 
         /// <summary>Initializes an instance of <see cref="TypedAction{T}" />.</summary>
         /// <param name="action">Action to call in case of successful argument parsing.</param>
-        public TypedAction(Action<T, IHandlerContext> action)
+        public TypedAction(Func<T, IHandlerContext, Task<HandleResult>> action)
         {
             _action = action;
             _parser = new ArgumentParser<T>();
@@ -70,8 +70,7 @@ namespace cOOnsole.Handlers
                 return Task.FromResult(HandleResult.HandledWithError);
             }
 
-            _action(typedArgument, Context);
-            return Task.FromResult(HandleResult.Handled);
+            return _action(typedArgument, Context);
         }
 
         /// <inheritdoc />

@@ -9,13 +9,15 @@ namespace cOOnsole.Handlers.Base
         /// <summary>Exposes the handler context to the implementations.</summary>
         protected IHandlerContext Context { get; private set; } = null!;
 
-        /// <inheritdoc cref="IPrintable.PrintSelf" />
-        public abstract void PrintSelf(IPrinter printer);
-
         /// <inheritdoc />
         public virtual void SetContext(IHandlerContext context) => Context = context;
 
         /// <inheritdoc />
         public abstract Task<HandleResult> HandleAsync(string[] input);
+
+        /// <inheritdoc cref="IPrintable.PrintSelf" />
+        public virtual void PrintSelf(IPrinter printer)
+        {
+        }
     }
 }

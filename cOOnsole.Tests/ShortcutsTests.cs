@@ -1,4 +1,5 @@
-﻿using cOOnsole.Handlers;
+﻿using System;
+using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
 using FluentAssertions;
 using Xunit;
@@ -27,9 +28,11 @@ namespace cOOnsole.Tests
         public void UnconditionalTest() => Unconditional(HandleResult.NotMatched).Should().BeOfType<Unconditional>();
 
         [Fact]
-        public void ActionTest() => Action(null!).Should().BeOfType<UntypedAction>();
+        public void ActionTest()
+            => Action((Action<string[], IHandlerContext>) null!).Should().BeOfType<UntypedAction>();
 
         [Fact]
-        public void ActionOfTTest() => Action<object>(null!).Should().BeOfType<TypedAction<object>>();
+        public void ActionOfTTest()
+            => Action((Action<object, IHandlerContext>) null!).Should().BeOfType<TypedAction<object>>();
     }
 }

@@ -14,7 +14,11 @@ namespace cOOnsole.Tests.Handlers
         public async Task CallsUnderlyingAction()
         {
             var called = false;
-            var action = new UntypedAction((_, _) => called = true);
+            var action = new UntypedAction((_, _) =>
+            {
+                called = true;
+                return Task.FromResult(HandleResult.Handled);
+            });
 
             await action.HandleAsync(new string[0]);
 
@@ -25,7 +29,11 @@ namespace cOOnsole.Tests.Handlers
         public async Task ProvidesArguments()
         {
             var context = Mock.Of<IHandlerContext>();
-            var action = new UntypedAction((a, _) => a.Should().BeEquivalentTo("a", "b"));
+            var action = new UntypedAction((a, _) =>
+            {
+                a.Should().BeEquivalentTo("a", "b");
+                return Task.FromResult(HandleResult.Handled);
+            });
             action.SetContext(context);
 
             await action.HandleAsync(new[] {"a", "b"});
@@ -35,7 +43,11 @@ namespace cOOnsole.Tests.Handlers
         public async Task ProvidesContext()
         {
             var context = Mock.Of<IHandlerContext>();
-            var action = new UntypedAction((_, c) => c.Should().Be(context));
+            var action = new UntypedAction((_, c) =>
+            {
+                c.Should().Be(context);
+                return Task.FromResult(HandleResult.Handled);
+            });
             action.SetContext(context);
 
             await action.HandleAsync(new string[0]);
@@ -44,7 +56,7 @@ namespace cOOnsole.Tests.Handlers
         [Fact]
         public async Task ReturnsHandled()
         {
-            var action = new UntypedAction((_, _) => { });
+            var action = new UntypedAction((_, _) => Task.FromResult(HandleResult.Handled));
 
             var result = await action.HandleAsync(new string[0]);
 

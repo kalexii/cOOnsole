@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Printing;
@@ -51,8 +50,7 @@ namespace cOOnsole
             }
             catch (Exception e)
             {
-                _printer.ResetIndent().Print(e.ToStringDemystified());
-                _printer.Flush();
+                _printer.ResetIndent().Print(e.ToString()).Flush();
                 return 1;
             }
         }

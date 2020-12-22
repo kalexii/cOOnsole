@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using cOOnsole.ArgumentParsing.Exceptions;
 using cOOnsole.ArgumentParsing.StateMachineParsing;
@@ -14,14 +13,13 @@ namespace cOOnsole.ArgumentParsing
     {
         private readonly Lazy<List<ArgumentProp>> _properties;
 
-        public ArgumentParser()
-        {
+        public ArgumentParser() =>
             _properties = new Lazy<List<ArgumentProp>>(() =>
             {
                 var type = typeof(T);
                 var result = type
                    .GetProperties()
-                   .Select(p => (p, p.GetCustomAttribute<ArgumentAttribute>(true)))
+                   .Select(p => (p, p.GetAttribute<ArgumentAttribute>()))
                    .Where(pair => pair.Item2 is not null)
                    .Select(pair => new ArgumentProp(pair.Item1, pair.Item2))
                    .ToList();
@@ -39,7 +37,6 @@ namespace cOOnsole.ArgumentParsing
 
                 return result;
             }, false);
-        }
 
         public void PrintSelf(IPrinter printer)
         {

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Printing;
@@ -19,7 +21,10 @@ namespace cOOnsole.Handlers
         /// <inheritdoc />
         public override void PrintSelf(IPrinter printer)
         {
-            var assembly = Assembly.GetEntryAssembly();
+            var assembly = Assembly.GetEntryAssembly()
+                           ?? AppDomain.CurrentDomain
+                              .GetAssemblies()
+                              .First(x => !x.FullName.StartsWith("mscorlib") && !x.FullName.StartsWith("System."));
             var version = assembly
               ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
               ?.InformationalVersion;

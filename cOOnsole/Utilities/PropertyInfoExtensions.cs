@@ -8,6 +8,26 @@ namespace cOOnsole.Utilities
 {
     internal static class PropertyInfoExtensions
     {
+        public static T GetAttribute<T>(this PropertyInfo property) where T : Attribute
+        {
+#if NETFRAMEWORK
+            var attributes = property.GetCustomAttributes(true);
+            for (var i = 0; i < attributes.Length; i++)
+            {
+                if (attributes[i] is T)
+                {
+                    return (T) attributes[i];
+                }
+            }
+
+            var message = $"Attribute of type {typeof(T)} is not found on property {property.Name}";
+            throw new InvalidOperationException(message);
+#endif
+#if NETSTANDARD
+            return property.GetCustomAttribute<T>(true);
+#endif
+        }
+
         internal static string ToPrettyTypeName(this PropertyInfo propertyInfo)
         {
             static string ToPrettyNameWithoutNullable(Type t) => t switch

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
 using FluentAssertions;
@@ -32,7 +31,7 @@ namespace cOOnsole.Tests.Handlers
             var actual = await token.HandleAsync(new[] {"token"});
 
             actual.Should().BeEquivalentTo(HandleResult.Handled);
-            tracker.Verify(x => x.HandleAsync(Array.Empty<string>()), Times.Once());
+            tracker.Verify(x => x.HandleAsync(new string[0]), Times.Once());
         }
     }
 }

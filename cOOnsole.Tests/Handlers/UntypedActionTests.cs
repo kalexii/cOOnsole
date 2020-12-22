@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using cOOnsole.Handlers;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Tests.TestUtilities;
@@ -17,7 +16,7 @@ namespace cOOnsole.Tests.Handlers
             var called = false;
             var action = new UntypedAction((_, _) => called = true);
 
-            await action.HandleAsync(Array.Empty<string>());
+            await action.HandleAsync(new string[0]);
 
             called.Should().BeTrue();
         }
@@ -39,7 +38,7 @@ namespace cOOnsole.Tests.Handlers
             var action = new UntypedAction((_, c) => c.Should().Be(context));
             action.SetContext(context);
 
-            await action.HandleAsync(Array.Empty<string>());
+            await action.HandleAsync(new string[0]);
         }
 
         [Fact]
@@ -47,7 +46,7 @@ namespace cOOnsole.Tests.Handlers
         {
             var action = new UntypedAction((_, _) => { });
 
-            var result = await action.HandleAsync(Array.Empty<string>());
+            var result = await action.HandleAsync(new string[0]);
 
             result.Should().Be(HandleResult.Handled);
         }

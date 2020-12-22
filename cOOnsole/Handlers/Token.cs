@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using cOOnsole.Handlers.Base;
 using cOOnsole.Printing;
@@ -27,14 +28,13 @@ namespace cOOnsole.Handlers
         /// <inheritdoc />
         public override Task<HandleResult> HandleAsync(string[] input)
             => input.Length > 0 && string.Equals(input[0], _token, Comparison)
-                ? Wrapped.HandleAsync(input[1..])
+                ? Wrapped.HandleAsync(input.Skip(1).ToArray())
                 : Task.FromResult(HandleResult.NotMatched);
 
         /// <inheritdoc />
         public override void PrintSelf(IPrinter printer)
         {
-            printer.Print(_token).NewLine();
-            using (printer.Indent())
+            using (printer.Print(_token).NewLine().Indent())
             {
                 Wrapped.PrintSelf(printer);
             }

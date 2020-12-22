@@ -19,7 +19,7 @@ namespace cOOnsole.ArgumentParsing.StateMachineParsing.States
         public void Flush()
         {
             var (p, _) = Argument;
-            var attempt = new ParseAttempt(Argument, _key, Captured);
+            var attempt = new ParseAttempt(Argument, _key, new[] {Captured});
             if (Captured is null)
             {
                 _context.SaveAttempt(attempt with {ErrorKind = ParsingErrorKind.ValueIsMissing});

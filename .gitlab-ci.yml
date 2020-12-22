@@ -7,7 +7,6 @@ stages:
 build:
   stage: build  
   script:
-    - dotnet clean -c Release
     - dotnet build -c Release
     - dotnet pack -c Release -o ./publish
   artifacts:
@@ -21,7 +20,7 @@ test:
    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools --ignore-failed-sources
   stage: test
   script:
-    - dotnet test --collect:"XPlat Code Coverage"
+    - dotnet test --collect:"XPlat Code Coverage" --framework net5.0
     - ls -ld ${CI_PROJECT_DIR}/**/TestResults/*
     - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:TextSummary;
     - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:Html;
